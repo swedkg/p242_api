@@ -1,21 +1,22 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: [:show, :edit, :update, :destroy]
+  before_action :set_message, only: [:edit, :destroy]
 
   # GET /messages
   # GET /messages.json
   def index
-    if params[:f]
-      puts params
-      @output = Message.where(fullfillment_id: params[:f])
-    else
-      @output = Message.all
-    end
-    render json: @output, status: :ok
+    @message = Message.all
+    render json: @message, status: :ok
   end
 
   # GET /messages/1
   # GET /messages/1.json
   def show
+    @message = Message.where(id: params[:id])
+    if @message.exists?
+      render json: @message, status: :ok
+    else
+      render json: {status: "error", message: "Can't find message"}, status: :unprocessable_entity
+    end
   end
 
   # GET /messages/new
@@ -31,29 +32,23 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
     @message = Message.new(message_params)
-
-    respond_to do |format|
-      if @message.save
-        format.html { redirect_to @message, notice: 'Message was successfully created.' }
-        format.json { render :show, status: :created, location: @message }
-      else
-        format.html { render :new }
-        format.json { render json: @message.errors, status: :unprocessable_entity }
-      end
+    if @message.save
+      render json: @message, status: :created
+    else
+      render json: @message.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /messages/1
   # PATCH/PUT /messages/1.json
   def update
-    respond_to do |format|
-      if @message.update(message_params)
-        format.html { redirect_to @message, notice: 'Message was successfully updated.' }
-        format.json { render :show, status: :ok, location: @message }
-      else
-        format.html { render :edit }
-        format.json { render json: @message.errors, status: :unprocessable_entity }
-      end
+    @message = Message.where(id: params[:id])
+    if @message.exists?
+      puts("Are we here?")
+      @message.update(message_params)
+      render json: @message, status: :created
+    else
+      render json: {status: "error", message: "Can't find message"}, status: :unprocessable_entity
     end
   end
 
@@ -75,6 +70,6 @@ class MessagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def message_params
-      params.require(:message).permit(:timestamp, :message, :fullfillment_id, :sender_id, :receiver_id)
+      params.permit(:id, :message, :fullfilment_id, :sender_id, :receiver_id)
     end
 end
