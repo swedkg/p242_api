@@ -4,16 +4,41 @@ class FullfilmentsController < ApplicationController
 
   # GET /fullfilments
   # GET /fullfilments.json
+
+#   render json: @riders.map { |rider|
+#   rider.as_json.merge({image: url_for(rider.picture)})
+# }, status: :ok
+
   def index
     puts params
-    if params[:request_id]
+    if params[:user_id]
       puts("are we here?")
-      @fullfilment = Fullfilment.where(request_id: params[:request_id])
+      @fullfilments = Fullfilment.where(user_id: params[:user_id])
+      
+      # Message.where(:sender_id=>1, :receiver_id=>2, :fullfilment_id=>6).or(Message.where(:sender_id=>2, :receiver_id=>1, :fullfilment_id=>6)).order(:created_at)
     else
       puts("or here?")
       @fullfilment = Fullfilment.all
     end
-    render json: @fullfilment, status: :ok
+        render json: @fullfilments.map { |f|
+        @request_title = f.request.title
+        @request_desc = f.request.desc
+        @requester_id= f.request.owner_id
+        @messages = Message.where(:sender_id=>f.user_id, :receiver_id=>@requester_id, :fullfilment_id=>f.id)
+                .or(Message.where(:sender_id=>@requester_id, :receiver_id=>f.user_id, :fullfilment_id=>f.id))
+                .order(:created_at)
+        puts(@messages.count)
+        puts(f.id)
+        puts("------------------------")
+        f.as_json.merge({
+          request: {
+            title: @request_title,
+            desc: @request_desc,
+            owner: @requester_id,
+          },
+          messages: @messages
+         })
+        } , status: :ok
   end
 
   # GET /fullfilments/1
@@ -40,10 +65,31 @@ class FullfilmentsController < ApplicationController
   # POST /fullfilments.json
   def create
     puts("we are here")
+
     @fullfilment = Fullfilment.new(fullfilment_params)
 
-      if @fullfilment.save
-        render json: @fullfilment, status: :created, location: @fullfilment
+    if @fullfilment.save
+
+      # TODO: to be moved to background task
+        # @fullfilment_id = @fullfilment.id
+        # @sender_id=fullfilment_params[:user_id]
+        # @sender = User.find(@sender_id)
+        # @request_id=fullfilment_params[:request_id]
+        # @request=Request.find(@request_id)
+        # @receiver_id=@request[:owner_id]
+        @sender = @fullfilment.user
+        @request = @fullfilment.request
+        @receiver = @fullfilment.request.owner
+        @message= "Hello " + @receiver.firstName + ", there is a volunteer! " + @sender.firstName + " " + @sender.lastName + " has signed up to fulfill your request"
+        puts(fullfilment_params.to_json, @sender_id, @sender.to_json,@request.to_json, @request[:id], @message)
+
+        m = Message.new(:fullfilment => @fullfilment, :sender => @sender, :receiver => @receiver, :message => @message)
+        m.save
+        if m.save
+          render json: @fullfilment, status: :created
+        else
+          render json: {status: "error", message: "Can't create message"}, status: :unprocessable_entity  
+        end
       else
         render json: @fullfilment.errors, status: :unprocessable_entity
       end
