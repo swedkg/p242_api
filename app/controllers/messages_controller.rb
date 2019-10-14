@@ -31,6 +31,8 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
+    # puts("It is nice to see you")
+    # render json: {status: "It is nice to see you"}, status: :ok
     @message = Message.new(message_params)
     if @message.save
       render json: @message, status: :created
@@ -70,6 +72,6 @@ class MessagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def message_params
-      params.permit(:id, :message, :fullfilment_id, :sender_id, :receiver_id)
+      params.except(:newMessage).permit(:id, :message, :fullfilment_id, :sender_id, :receiver_id)
     end
 end

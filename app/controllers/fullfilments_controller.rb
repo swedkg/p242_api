@@ -4,11 +4,6 @@ class FullfilmentsController < ApplicationController
 
   # GET /fullfilments
   # GET /fullfilments.json
-
-#   render json: @riders.map { |rider|
-#   rider.as_json.merge({image: url_for(rider.picture)})
-# }, status: :ok
-
   def index
     puts params
     if params[:user_id]
@@ -27,9 +22,6 @@ class FullfilmentsController < ApplicationController
         @messages = Message.where(:sender_id=>f.user_id, :receiver_id=>@requester_id, :fullfilment_id=>f.id)
                 .or(Message.where(:sender_id=>@requester_id, :receiver_id=>f.user_id, :fullfilment_id=>f.id))
                 .order(:created_at)
-        puts(@messages.count)
-        puts(f.id)
-        puts("------------------------")
         f.as_json.merge({
           request: {
             title: @request_title,
@@ -71,17 +63,11 @@ class FullfilmentsController < ApplicationController
     if @fullfilment.save
 
       # TODO: to be moved to background task
-        # @fullfilment_id = @fullfilment.id
-        # @sender_id=fullfilment_params[:user_id]
-        # @sender = User.find(@sender_id)
-        # @request_id=fullfilment_params[:request_id]
-        # @request=Request.find(@request_id)
-        # @receiver_id=@request[:owner_id]
         @sender = @fullfilment.user
         @request = @fullfilment.request
         @receiver = @fullfilment.request.owner
         @message= "Hello " + @receiver.firstName + ", there is a volunteer! " + @sender.firstName + " " + @sender.lastName + " has signed up to fulfill your request"
-        puts(fullfilment_params.to_json, @sender_id, @sender.to_json,@request.to_json, @request[:id], @message)
+        # puts(fullfilment_params.to_json, @sender_id, @sender.to_json,@request.to_json, @request[:id], @message)
 
         m = Message.new(:fullfilment => @fullfilment, :sender => @sender, :receiver => @receiver, :message => @message)
         m.save
