@@ -4,8 +4,35 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    @message = Message.all
-    render json: @message, status: :ok
+    if params[:user_id]
+      user_id = params[:user_id]
+      @message = Message.where(:sender_id=>user_id)
+      .or(Message.where(:receiver_id=>user_id))
+      .order(:created_at)
+      # .group(:fullfilment_id).count
+    else
+      @message = Message.all
+    end
+    render json: @message.map { |m|
+    @sender = User.find(m.sender_id)
+    @receiver = User.find(m.receiver_id)
+    m.as_json.merge({
+      fullfilment_id: m.fullfilment.id,
+      request_id: m.fullfilment.request.id,
+      users: {
+        sender: {
+          id: @sender.id,
+          firstName: @sender.firstName,
+          lastName: @sender.lastName,
+          },
+        receiver: {
+          id: @receiver.id,
+          firstName: @receiver.firstName,
+          lastName: @receiver.lastName,
+          }
+        }
+      })
+    }, status: :ok
   end
 
   # GET /messages/1
@@ -72,6 +99,6 @@ class MessagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def message_params
-      params.except(:newMessage).permit(:id, :message, :fullfilment_id, :sender_id, :receiver_id)
+      params.except(:newMessage).permit(:id, :message, :fullfilment_id, :sender_id, :receiver_id , :user_id)
     end
 end

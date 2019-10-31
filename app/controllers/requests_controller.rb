@@ -6,7 +6,32 @@ class RequestsController < ApplicationController
   def index
     @requests = Request.all
 
-    render json: @requests
+    # Request.find(1).fullfilments.pluck(:user_id)
+
+    render json: @requests.map { |m|
+      # @user_ids = m.fullfilments.pluck(:user_id)
+      @collection = m.responders
+        .pluck(:user_id, :firstName, :lastName)
+        # puts(@collection)
+        
+       @details = @collection.map{
+          |user_id, firstName, lastName|
+          {
+            id: user_id,
+            firstName: firstName,
+            lastName: lastName,
+          }
+        }
+
+        @user_ids = @details.map{ |user| user[:id] }
+
+      m.as_json.merge({
+        responders: {
+          ids: @user_ids,
+          details: @details
+        }
+      })
+    }
   end
 
   # GET /requests/1
@@ -46,6 +71,14 @@ class RequestsController < ApplicationController
   # DELETE /requests/1
   def destroy
     @request.destroy
+  end
+
+  # GET /requests/status
+  def status
+    requestsAll= Request.all.count
+    unfulfilled= Request.where(:status =>false).count
+
+    render json: {requests: {"total": requestsAll, "unfulfilled": unfulfilled}}, status: :ok
   end
 
   private

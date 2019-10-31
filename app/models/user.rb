@@ -7,6 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :fullfilments
+  has_many :responded_requests, through: :fullfilments, source: "request"
   has_many :messages
   has_many :requests, class_name: "Request", foreign_key: "owner_id"
 end
