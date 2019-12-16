@@ -7,4 +7,12 @@ test:
 production:
   adapter: redis
   url: redis://localhost:6379/1
-  channel_prefix: p242be_api_production
+#   channel_prefix: p242be_api_production
+
+# redis: &redis
+#   adapter: redis
+#   url: redis://localhost:6379/1
+
+# production: *redis
+# development: *redis
+# test: *redis

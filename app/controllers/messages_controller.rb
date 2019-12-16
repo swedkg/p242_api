@@ -1,4 +1,7 @@
 class MessagesController < ApplicationController
+  # before_action :authenticate_user! , except: [:index]
+  before_action :authenticate_user!
+
   before_action :set_message, only: [:edit, :destroy]
 
   # GET /messages
@@ -18,6 +21,7 @@ class MessagesController < ApplicationController
     @receiver = User.find(m.receiver_id)
     m.as_json.merge({
       fullfilment_id: m.fullfilment.id,
+      fullfilment_status: m.fullfilment.status,
       request_id: m.fullfilment.request.id,
       users: {
         sender: {

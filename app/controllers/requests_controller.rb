@@ -5,27 +5,63 @@ class RequestsController < ApplicationController
   # GET /requests
   def index
     @requests = Request.all
+    
+    # .where(:republised => [1,2])
+
+
+    # change respond to fulfill 
+
+    # TODO:
+    # 0 = published (displayed on the map)
+    # 1 = can be republished (hidden from map, enable Republish button) -> after the 24h shift
+    # 2 = republished (displayed on map) -> cannot go to status #1
+    # 3 = closed (never display again)
+
+    # default status = 0
+
+    # TODO:
+    # Once 5 separate users have clicked on the fulfillment button
+    # the need is no longer displayed on the site => in Fullfilments Controller set status = 0
+    
+    # time_diff = time_now - created_at
+    # we will filter this in in the UI
+
+    # TODO: if responders == 5 && time_diff < 24h => status = 2    
+    # calculated every time we ask for all the requests 
+
+    # TODO: if fulfilled == true => status = 3
+    
+    # if rep = 0 check against the current time
+    # ...
+    # update status
+
+    # 
 
     # Request.find(1).fullfilments.pluck(:user_id)
 
-    render json: @requests.map { |m|
+    render json: @requests.map { |r|
       # @user_ids = m.fullfilments.pluck(:user_id)
-      @collection = m.responders
+      @collection = r.responders
         .pluck(:user_id, :firstName, :lastName)
-        # puts(@collection)
-        
+  
+      # fullfilment_status = r.fullfilments.where(status: false)
+      #   puts(fullfilment_status)
        @details = @collection.map{
           |user_id, firstName, lastName|
           {
             id: user_id,
             firstName: firstName,
             lastName: lastName,
+            fullfilment: r.responders.find(user_id).fullfilments[0]
           }
         }
 
         @user_ids = @details.map{ |user| user[:id] }
 
-      m.as_json.merge({
+      r.as_json.merge({
+        # time_now: DateTime.now,
+        # time_shift: time_shift = DateTime.now.ago(3600),
+        # compare: time_shift < r.updated_at,
         responders: {
           ids: @user_ids,
           details: @details
@@ -62,7 +98,7 @@ class RequestsController < ApplicationController
   # PATCH/PUT /requests/1
   def update
     if @request.update(request_params)
-      render json: @request
+      render json: @request, status: :ok
     else
       render json: @request.errors, status: :unprocessable_entity
     end
@@ -75,10 +111,16 @@ class RequestsController < ApplicationController
 
   # GET /requests/status
   def status
-    requestsAll= Request.all.count
-    unfulfilled= Request.where(:status =>false).count
+    requests= Request.all
+    # unfulfilled=[]
+    # requestsAll= Request.all.count
+    # unfulfilled= Request.where(:status =>false).count
 
-    render json: {requests: {"total": requestsAll, "unfulfilled": unfulfilled}}, status: :ok
+    unfulfilled=requests.select do |elem|
+      elem.republised == 0
+    end
+    time = Time.new.inspect
+    render json: {requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}}, status: :ok
   end
 
   private

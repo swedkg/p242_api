@@ -1,5 +1,6 @@
 class FullfilmentsController < ApplicationController
   # before_action :authenticate_user! , except: [:index]
+  before_action :authenticate_user!
   before_action :set_fullfilment, only: [:destroy]
 
   # GET /fullfilments
@@ -11,26 +12,27 @@ class FullfilmentsController < ApplicationController
       @fullfilments = Fullfilment.where(user_id: params[:user_id])
       
       # Message.where(:sender_id=>1, :receiver_id=>2, :fullfilment_id=>6).or(Message.where(:sender_id=>2, :receiver_id=>1, :fullfilment_id=>6)).order(:created_at)
+      render json: @fullfilments.map { |f|
+      @request_title = f.request.title
+      @request_desc = f.request.desc
+      @requester_id= f.request.owner_id
+      @messages = Message.where(:sender_id=>f.user_id, :receiver_id=>@requester_id, :fullfilment_id=>f.id)
+              .or(Message.where(:sender_id=>@requester_id, :receiver_id=>f.user_id, :fullfilment_id=>f.id))
+              .order(:created_at)
+      f.as_json.merge({
+        request: {
+          title: @request_title,
+          desc: @request_desc,
+          owner: @requester_id,
+        },
+        messages: @messages
+       })
+      } , status: :ok
     else
       puts("or here?")
       @fullfilment = Fullfilment.all
+      render json: @fullfilment, status: :ok
     end
-        render json: @fullfilments.map { |f|
-        @request_title = f.request.title
-        @request_desc = f.request.desc
-        @requester_id= f.request.owner_id
-        @messages = Message.where(:sender_id=>f.user_id, :receiver_id=>@requester_id, :fullfilment_id=>f.id)
-                .or(Message.where(:sender_id=>@requester_id, :receiver_id=>f.user_id, :fullfilment_id=>f.id))
-                .order(:created_at)
-        f.as_json.merge({
-          request: {
-            title: @request_title,
-            desc: @request_desc,
-            owner: @requester_id,
-          },
-          messages: @messages
-         })
-        } , status: :ok
   end
 
   # GET /fullfilments/1
@@ -83,11 +85,15 @@ class FullfilmentsController < ApplicationController
 
   # PATCH/PUT /fullfilments/1
   # PATCH/PUT /fullfilments/1.json
+
+  # Request.find(11).fullfilments.where(user_id: 2)
+
   def update
+    puts(params)
     @fullfilment = Fullfilment.where(id: params[:id])
     if @fullfilment.exists?
       @fullfilment.update(fullfilment_params)
-      render json: @fullfilment, status: :created, location: @fullfilment
+      render json: @fullfilment, status: :ok
     else
       render json: {status: "error", message: "Can't find fullfilment"}, status: :unprocessable_entity
     end
@@ -111,6 +117,6 @@ class FullfilmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fullfilment_params
-      params.permit(:request_id, :user_id, :status)
+      params.permit(:request_id, :user_id, :status, :id)
     end
 end

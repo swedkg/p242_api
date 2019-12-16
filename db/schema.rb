@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191003151909) do
+ActiveRecord::Schema.define(version: 20191210191619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20191003151909) do
   create_table "fullfilments", force: :cascade do |t|
     t.bigint "request_id"
     t.bigint "user_id"
-    t.integer "status"
+    t.boolean "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["request_id"], name: "index_fullfilments_on_request_id"
@@ -43,12 +43,12 @@ ActiveRecord::Schema.define(version: 20191003151909) do
     t.text "desc"
     t.float "lat"
     t.float "lng"
-    t.boolean "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "owner_id"
     t.boolean "isOneTime"
     t.string "address"
+    t.integer "republised"
     t.index ["owner_id"], name: "index_requests_on_owner_id"
   end
 
