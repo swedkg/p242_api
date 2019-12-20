@@ -58,7 +58,6 @@ class FullfilmentsController < ApplicationController
   # POST /fullfilments
   # POST /fullfilments.json
   def create
-    puts("we are here")
 
     @fullfilment = Fullfilment.new(fullfilment_params)
 
@@ -67,6 +66,11 @@ class FullfilmentsController < ApplicationController
       # TODO: to be moved to background task
         @sender = @fullfilment.user
         @request = @fullfilment.request
+
+        if (@request.fullfilments.count == 3)
+          @request.update(republished: 1)
+        end
+
         @receiver = @fullfilment.request.owner
         @message= "Hello " + @receiver.firstName + ", there is a volunteer! " + @sender.firstName + " " + @sender.lastName + " has signed up to fulfill your request"
         # puts(fullfilment_params.to_json, @sender_id, @sender.to_json,@request.to_json, @request[:id], @message)
@@ -117,6 +121,6 @@ class FullfilmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fullfilment_params
-      params.permit(:request_id, :user_id, :status, :id)
+      params.permit(:request_id, :user_id, :status, :id, :fullfilment)
     end
 end

@@ -1,39 +1,26 @@
 class RequestsController < ApplicationController
-  # before_action :authenticate_user! , except: [:index]
+  before_action :authenticate_user! , except: [:index, :status]
   before_action :set_request, only: [:update, :destroy]
 
   # GET /requests
   def index
-    @requests = Request.all
+    @requests = Request.where(fulfilled: false)
     
     # .where(:republised => [1,2])
 
 
-    # change respond to fulfill 
-
-    # TODO:
-    # 0 = published (displayed on the map)
-    # 1 = can be republished (hidden from map, enable Republish button) -> after the 24h shift
-    # 2 = republished (displayed on map) -> cannot go to status #1
-    # 3 = closed (never display again)
-
-    # default status = 0
-
-    # TODO:
-    # Once 5 separate users have clicked on the fulfillment button
-    # the need is no longer displayed on the site => in Fullfilments Controller set status = 0
+    # Handled by back end
+    # fulfilled:  false (default): display on UI
+    #             true (manually set): hide from UI, disallow republish, consider it complete
+    #
+    # republish:  0 (default)
+    #             1 (allow): responders >= 5 && alive> 24h -> display button on UI, hide from map 
+    #             2 (republished) && alive> 24h -> set as fulfilled
     
-    # time_diff = time_now - created_at
-    # we will filter this in in the UI
+    # Handled by UI
+    # visible:    1 (default)
+    #             0 (hidden): responders >= 5 -> hide from map
 
-    # TODO: if responders == 5 && time_diff < 24h => status = 2    
-    # calculated every time we ask for all the requests 
-
-    # TODO: if fulfilled == true => status = 3
-    
-    # if rep = 0 check against the current time
-    # ...
-    # update status
 
     # 
 
@@ -44,24 +31,38 @@ class RequestsController < ApplicationController
       @collection = r.responders
         .pluck(:user_id, :firstName, :lastName)
   
-      # fullfilment_status = r.fullfilments.where(status: false)
-      #   puts(fullfilment_status)
-       @details = @collection.map{
-          |user_id, firstName, lastName|
-          {
-            id: user_id,
-            firstName: firstName,
-            lastName: lastName,
-            fullfilment: r.responders.find(user_id).fullfilments[0]
-          }
+      @details = @collection.map{
+        |user_id, firstName, lastName|
+        {
+          id: user_id,
+          firstName: firstName,
+          lastName: lastName,
+          fullfilment: r.responders.find(user_id).fullfilments[0]
         }
+      }
 
-        @user_ids = @details.map{ |user| user[:id] }
+      @user_ids = @details.map{ |user| user[:id] }
+
+      numOfResponders = @user_ids.length
+
+      puts(r.republished)
+      time_shift_24h = r.created_at < DateTime.now.ago(24*3600)
+      if (r.republished == 0) 
+        if (numOfResponders >= 5)
+          r.republished = 1
+        end
+      end
+
+      if (r.republished == 2)
+        if (r.updated_at < DateTime.now.ago(60))
+          Request.find(r.id).update(fulfilled: true)
+          r.fulfilled = true
+        end
+      end
+
 
       r.as_json.merge({
-        # time_now: DateTime.now,
-        # time_shift: time_shift = DateTime.now.ago(3600),
-        # compare: time_shift < r.updated_at,
+        fulfilled_at: r.updated_at < DateTime.now.ago(60),
         responders: {
           ids: @user_ids,
           details: @details
@@ -117,7 +118,7 @@ class RequestsController < ApplicationController
     # unfulfilled= Request.where(:status =>false).count
 
     unfulfilled=requests.select do |elem|
-      elem.republised == 0
+      elem.fulfilled == false
     end
     time = Time.new.inspect
     render json: {requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}}, status: :ok
@@ -131,6 +132,6 @@ class RequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def request_params
-      params.except(:request).permit(:title, :desc, :owner_id, :lat, :lng, :id, :isOneTime, :status, :address)
+      params.except(:request).permit(:title, :desc, :owner_id, :lat, :lng, :id, :isOneTime, :fulfilled, :address, :republished)
     end
 end
