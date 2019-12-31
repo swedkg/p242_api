@@ -5,7 +5,12 @@ class SessionsController < ApplicationController
     user = User.where(email: params[:email]).first
 
     if user&.valid_password?(params[:password])
-      render json: user.as_json(only: [:id, :email, :authentication_token, :firstName, :lastName]), status: :created
+      if(user.picture.attached?)
+        image = url_for(user.picture)
+      else
+        image = nil
+      end
+      render json: user.as_json(only: [:id, :email, :authentication_token, :firstName, :lastName]).merge({image: image}), status: :created
     else
       if (!user) 
         error="Email not found" 

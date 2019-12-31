@@ -6,6 +6,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_one_attached :picture
+
   has_many :fullfilments
   has_many :responded_requests, through: :fullfilments, source: "request"
   has_many :messages
