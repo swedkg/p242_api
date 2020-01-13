@@ -89,9 +89,6 @@ class FullfilmentsController < ApplicationController
 
   # PATCH/PUT /fullfilments/1
   # PATCH/PUT /fullfilments/1.json
-
-  # Request.find(11).fullfilments.where(user_id: 2)
-
   def update
     puts(params)
     @fullfilment = Fullfilment.where(id: params[:id])

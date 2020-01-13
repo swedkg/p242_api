@@ -1,6 +1,10 @@
 class SessionsController < ApplicationController
   before_action :authenticate_user! , except: [:create]
 
+  def sign_in_as(params)
+    post "/sessions", params: { email: params[email], password: params[password], authentication_token:params[authentication_token] }
+  end
+
   def create
     user = User.where(email: params[:email]).first
 
@@ -22,15 +26,13 @@ class SessionsController < ApplicationController
     end
   end
 
-  def destroy   
-  end
+  # def destroy   
+  # end
   
-  def logout     
-
+  def logout
     current_user.authentication_token = nil
     if (current_user.save!)
       render json: {message: "User logged out" }, status: :ok
     end
   end
-  
 end
