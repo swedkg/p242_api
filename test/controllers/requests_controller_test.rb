@@ -1,38 +1,47 @@
 require 'test_helper'
 
 class RequestsControllerTest < ActionDispatch::IntegrationTest
+  requests_url = '/requests'
+
   setup do
-    @request = requests(:one)
+    @request = requests(:request_one)
   end
 
   test "should get index" do
-    get requests_url, as: :json
+
+    get requests_url
+
     assert_response :success
+
   end
 
   test "should create request" do
+
+    user = users(:one).as_json
     assert_difference('Request.count') do
-      post requests_url, params: { request: { desc: @request.desc, title: @request.title } }, as: :json
+      post requests_url, params: { desc: @request.desc, title: @request.title, owner_id: user['id'] }, headers: { 'X-User-Email' => user['email'], 'X-User-Token' => user['authentication_token'] }
     end
 
     assert_response 201
   end
 
-  test "should show request" do
-    get request_url(@request), as: :json
-    assert_response :success
-  end
+  test "shoud get platform status" do
+    
+    get '/platform/status'
 
-  test "should update request" do
-    patch request_url(@request), params: { request: { desc: @request.desc, title: @request.title } }, as: :json
     assert_response 200
+    assert json_response['requests']['total']
+    assert json_response['requests']['unfulfilled']
+    assert json_response['requests']['time']
+
   end
 
-  test "should destroy request" do
-    assert_difference('Request.count', -1) do
-      delete request_url(@request), as: :json
-    end
 
-    assert_response 204
-  end
 end
+
+
+
+def json_response
+  ActiveSupport::JSON.decode @response.body
+end
+

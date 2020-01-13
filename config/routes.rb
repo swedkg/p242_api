@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   devise_for :users, only: []
 
   resources :users
-  resources :requests
+  # TODO: why this is failing?
+  # resources :requests, except: [:destroy, :update, :show]
+  resources :requests, except: [:destroy, :update]
   resources :fullfilments
   resources :messages
   resources :sessions

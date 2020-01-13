@@ -1,5 +1,5 @@
 class RequestsController < ApplicationController
-  before_action :authenticate_user! , except: [:index, :status]
+  before_action :authenticate_user!, only: [:create]
   before_action :set_request, only: [:update, :destroy]
 
   # GET /requests
@@ -45,7 +45,7 @@ class RequestsController < ApplicationController
 
       numOfResponders = @user_ids.length
 
-      puts(r.republished)
+      # puts(r.republished)
       time_shift_24h = r.created_at < DateTime.now.ago(24*3600)
       if (r.republished == 0) 
         if (numOfResponders >= 5)
@@ -83,15 +83,13 @@ class RequestsController < ApplicationController
 
   # POST /requests
   def create
-    puts("we are here")
-    puts(request_params)
     # render json: {status: "created"},status: :created
     @request = Request.new(request_params)
     
     if @request.save
       render json: @request, status: :created, location: @request
     else
-      puts("we are out")
+      # puts("we are out")
       render json: @request.errors, status: :unprocessable_entity
     end
   end
