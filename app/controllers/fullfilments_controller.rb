@@ -6,9 +6,9 @@ class FullfilmentsController < ApplicationController
   # GET /fullfilments
   # GET /fullfilments.json
   def index
-    puts params
+    # puts params
     if params[:user_id]
-      puts("are we here?")
+      # puts("are we here?")
       @fullfilments = Fullfilment.where(user_id: params[:user_id])
       
       # Message.where(:sender_id=>1, :receiver_id=>2, :fullfilment_id=>6).or(Message.where(:sender_id=>2, :receiver_id=>1, :fullfilment_id=>6)).order(:created_at)
@@ -29,7 +29,7 @@ class FullfilmentsController < ApplicationController
        })
       } , status: :ok
     else
-      puts("or here?")
+      # puts("or here?")
       @fullfilment = Fullfilment.all
       render json: @fullfilment, status: :ok
     end

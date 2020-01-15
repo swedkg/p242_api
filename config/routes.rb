@@ -6,14 +6,16 @@ Rails.application.routes.draw do
   # devise_for :users
   devise_for :users, only: []
 
-  resources :users
-  # TODO: why this is failing?
+  resources :users, only: [:show]
+
   # resources :requests, except: [:destroy, :update, :show]
+  # TODO: why this ^^ makes the test fail?
+  
   resources :requests, except: [:destroy, :update]
-  resources :fullfilments
-  resources :messages
-  resources :sessions
-  # resources :sessions, only: [:create, :destroy]
+  resources :fullfilments, only: [:index, :create]
+  resources :messages, only: [:index, :create]
+  # resources :sessions
+  resources :sessions, only: [:create, :destroy]
   get '/platform/:status', to: 'requests#status'
   delete '/user/:logout', to: 'sessions#logout'
   

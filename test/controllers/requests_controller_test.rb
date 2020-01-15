@@ -11,13 +11,15 @@ class RequestsControllerTest < ActionDispatch::IntegrationTest
 
     get requests_url
 
+    # puts json_response
+
     assert_response :success
 
   end
 
   test "should create request" do
 
-    user = users(:one).as_json
+    user = users(:one)
     assert_difference('Request.count') do
       post requests_url, params: { desc: @request.desc, title: @request.title, owner_id: user['id'] }, headers: { 'X-User-Email' => user['email'], 'X-User-Token' => user['authentication_token'] }
     end

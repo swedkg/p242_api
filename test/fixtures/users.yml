@@ -12,6 +12,14 @@ one:
   created_at: 2019-09-06T19:12:11.959Z
   updated_at: 2019-12-24T17:04:27.465Z
   authentication_token: WwLpZe7ZYxKaZWD9Y-3Z
+two:
+  email: jc@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  created_at: 2019-09-23T17:31:46.904Z
+  updated_at: 2019-12-20T13:13:22.036Z
+  authentication_token: cQgLUnQFe7jrVwb6FNzw
+  firstName: Janis
+  lastName: Crooks
 # column: value
 #
 # two: {}

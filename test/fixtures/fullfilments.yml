@@ -1,0 +1,6 @@
+fullfilment_one:
+  request_id: <%= ActiveRecord::FixtureSet.identify(:request_one) %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
+  status: true
+  created_at: 2019-11-08T14:08:41.931Z
+  updated_at: 2019-11-24T11:34:49.031Z

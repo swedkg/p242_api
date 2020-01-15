@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RequestTest < ActiveSupport::TestCase
+class RequestModelTest < ActiveSupport::TestCase
   test "the truth" do
     assert true
   end
