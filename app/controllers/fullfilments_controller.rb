@@ -72,6 +72,7 @@ class FullfilmentsController < ApplicationController
         end
 
         @receiver = @fullfilment.request.owner
+
         @message= "Hello " + @receiver.firstName + ", there is a volunteer! " + @sender.firstName + " " + @sender.lastName + " has signed up to fulfill your request"
         # puts(fullfilment_params.to_json, @sender_id, @sender.to_json,@request.to_json, @request[:id], @message)
 
@@ -90,7 +91,7 @@ class FullfilmentsController < ApplicationController
   # PATCH/PUT /fullfilments/1
   # PATCH/PUT /fullfilments/1.json
   def update
-    puts(params)
+    # puts(params)
     @fullfilment = Fullfilment.where(id: params[:id])
     if @fullfilment.exists?
       @fullfilment.update(fullfilment_params)

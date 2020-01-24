@@ -4,10 +4,10 @@ require 'test_helper'
   # TODO: test that locked routes cannot be accessed
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  users_url= "/users"
+  # users_url= "/users"
 
   test "create user" do
-    post users_url,
+    post users_path,
     params: {
       firstName: "jane",
       lastName: "Doe",

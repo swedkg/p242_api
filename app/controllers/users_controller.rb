@@ -4,9 +4,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
-    # render json: @users, status: :ok
-
-    
+    # render json: @users, status: :ok    
     render json: @users.map { |user|
       if(user.picture.attached?)
         user.as_json.merge({image: url_for(user.picture)})
@@ -14,6 +12,9 @@ class UsersController < ApplicationController
         user.as_json.merge({image: nil})
       end
     }, status: :ok
+  end
+
+  def show
   end
 
   # POST /users

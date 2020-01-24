@@ -6,13 +6,14 @@ Rails.application.routes.draw do
   # devise_for :users
   devise_for :users, only: []
 
-  resources :users, only: [:show]
+  resources :users, only: [:show, :create]
+  #TODO:                 why :show has to be here?
 
   # resources :requests, except: [:destroy, :update, :show]
   # TODO: why this ^^ makes the test fail?
   
   resources :requests, except: [:destroy, :update]
-  resources :fullfilments, only: [:index, :create]
+  resources :fullfilments #, only: [:index, :create]
   resources :messages, only: [:index, :create]
   # resources :sessions
   resources :sessions, only: [:create, :destroy]
