@@ -63,7 +63,6 @@ class FullfilmentsController < ApplicationController
 
     if @fullfilment.save
 
-      # TODO: to be moved to background task
         @sender = @fullfilment.user
         @request = @fullfilment.request
 

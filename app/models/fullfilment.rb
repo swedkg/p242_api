@@ -4,5 +4,8 @@ class Fullfilment < ApplicationRecord
 
   #TODO: ADD validations here!!
   # TODO: test all models and controllers!!
+
+  validates :request_id, presence: true
+  validates :user_id, presence: true
   
 end

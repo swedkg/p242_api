@@ -10,8 +10,6 @@ class FullfilmentsControllerTest < ActionDispatch::IntegrationTest
 
     get fullfilments_url, params: { user_id: user['id'] }, headers: { 'X-User-Email' => user['email'], 'X-User-Token' => user['authentication_token'] }
 
-    # puts json_response
-
     assert_response 200
     
   end

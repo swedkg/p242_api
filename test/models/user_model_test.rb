@@ -63,9 +63,7 @@ class UserModelTest < ActiveSupport::TestCase
 
   test "validate email format" do
     user = User.new(email: "@ds.com")
-    # puts "user:", user
     user.valid?
-    # puts erros: user.errors
     assert user.errors.added?(:email, :invalid, {value: "@ds.com"})
     assert user.errors.added?(:email, "The email is invalid")
   end
