@@ -28,7 +28,6 @@ class RequestModelTest < ActiveSupport::TestCase
   test "validate user must exit" do
     request = Request.new(owner: nil)
     request.valid?
-    puts request.errors.as_json
     assert request.errors.added?(:owner, :blank)
     assert request.errors.added?(:owner, "can't be blank")
   end
