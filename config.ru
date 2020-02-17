@@ -1,8 +1,10 @@
 # This file is used by Rack-based servers to start the application.
 
 require_relative 'config/environment'
-require 'rack/cors'
 
+run Rails.application
+
+require 'rack/cors'
 Rack::Cors do
     allow do
       origins "*"
@@ -12,5 +14,3 @@ Rack::Cors do
                expose: ["X-Total-Count"]
     end
   end
-
-run Rails.application
