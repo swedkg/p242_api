@@ -38,3 +38,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 gem 'simple_token_authentication', '~> 1.0' # see semver.org
+gem "aws-sdk-s3", require: false
+gem 'certified'
