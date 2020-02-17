@@ -14,3 +14,4 @@ Rack::Cors do
                expose: ["X-Total-Count"]
     end
   end
+end
