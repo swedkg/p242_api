@@ -21,8 +21,8 @@ require 'rack/cors'
     allow do
       origins '*'
       resource '*', 
-          :headers => :any, 
-          :methods => [:get, :patch, :put, :delete, :post, :options]
+          headers: :any, 
+          methods: [:get, :patch, :put, :delete, :post, :options]
           expose: ["X-Total-Count"]
     end
   end
