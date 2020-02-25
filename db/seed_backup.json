@@ -1,0 +1,311 @@
+{
+    "users": [
+      {
+        "firstName": "Edwin",
+        "lastName": "Jimenez",
+        "email": "edwin.jimenez@example.com",
+        "password": "GaQUqm",
+        "picture": "men_34.jpg"
+      },
+      {
+        "firstName": "Raymond",
+        "lastName": "Rodriquez",
+        "email": "raymond.rodriquez@example.com",
+        "password": "hsMwiy",
+        "picture": "men_81.jpg"
+      },
+      {
+        "firstName": "Scott",
+        "lastName": "Bryant",
+        "email": "scott.bryant@example.com",
+        "password": "lXrzhx",
+        "picture": "men_96.jpg"
+      },
+      {
+        "firstName": "Glen",
+        "lastName": "Horton",
+        "email": "glen.horton@example.com",
+        "password": "NwxmOZ",
+        "picture": "men_29.jpg"
+      },
+      {
+        "firstName": "Andrea",
+        "lastName": "Carter",
+        "email": "andrea.carter@example.com",
+        "password": "SxgcOf",
+        "picture": "women_70.jpg"
+      },
+      {
+        "firstName": "Luis",
+        "lastName": "Edwards",
+        "email": "luis.edwards@example.com",
+        "password": "bWlHQY",
+        "picture": "men_43.jpg"
+      },
+      {
+        "firstName": "Leroy",
+        "lastName": "Chambers",
+        "email": "leroy.chambers@example.com",
+        "password": "fHXeIE",
+        "picture": "men_40.jpg"
+      },
+      {
+        "firstName": "Neil",
+        "lastName": "Stone",
+        "email": "neil.stone@example.com",
+        "password": "dgMipW",
+        "picture": "men_4.jpg"
+      },
+      {
+        "firstName": "Mandy",
+        "lastName": "Marshall",
+        "email": "mandy.marshall@example.com",
+        "password": "rYNhve",
+        "picture": "women_44.jpg"
+      },
+      {
+        "firstName": "Eliza",
+        "lastName": "Henry",
+        "email": "eliza.henry@example.com",
+        "password": "xXKfBR",
+        "picture": "women_58.jpg"
+      }
+    ],
+    "requests": [
+      {
+        "owner_id": "1",
+        "title": "Dolores illo voluptates dolor ab.",
+        "desc": "Excepturi accusamus veritatis voluptatem iure placeat. Voluptas officia est unde laudantium eum voluptas aut tenetur. Odit voluptates iste dolorem nesciunt. Natus repudiandae quibusdam dolor consequatur consequatur dolores.",
+        "isOneTime": "0",
+        "lat": "49.5940598",
+        "lng": "6.0273813",
+        "address": "Avenue de Luxembourg, Bertrange, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "2",
+        "title": "Optio cum qui at.",
+        "desc": "Qui distinctio dicta et provident ut doloremque. Voluptatem inventore voluptatum nihil dolore illum culpa cumque expedita. Voluptatibus quisquam omnis iusto dolorem et.",
+        "isOneTime": "0",
+        "lat": "49.5018372",
+        "lng": "6.27013394",
+        "address": "3 Rue Emile Moselly, 57570 Mondorff, France",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "3",
+        "title": "Modi quo at dolorem.",
+        "desc": "Tempora sapiente eaque voluptas necessitatibus voluptate qui. Ea dolorum sequi accusamus veniam quam. Debitis tempore at tenetur debitis dolor. Quo vel facere in deserunt eaque pariatur.",
+        "isOneTime": "0",
+        "lat": "49.5029520",
+        "lng": "6.31631085",
+        "address": "24 Rue Pierre Diederich, 5692 Elvange, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "4",
+        "title": "Suscipit aspernatur porro est ut placeat ea doloribus.",
+        "desc": "Qui ipsa perspiciatis aut alias. Consequatur veritatis doloribus nihil qui. Suscipit exercitationem aperiam at quae.",
+        "isOneTime": "1",
+        "lat": "49.5268278",
+        "lng": "6.34542519ech",
+        "address": "Rue de Remich Wellenstein Remich",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "5",
+        "title": "Maxime illum voluptatem voluptatem iste est.",
+        "desc": "Distinctio sed voluptatem facere suscipit sit non. Non at sunt repudiandae consequatur. Ut velit cupiditate molestiae corporis saepe ea perspiciatis.",
+        "isOneTime": "0",
+        "lat": "49.5008805",
+        "lng": "5.98609250",
+        "address": "Esch-sur-Alzette Esch-sur-Alzette Luxembourg District",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "6",
+        "title": "Eum iure sequi dolores aperiam autem perferendis.",
+        "desc": "Est odio reiciendis mollitia ab qui. Similique amet molestiae et animi cupiditate cupiditate qui dicta. Et ratione officiis soluta quam voluptas tenetur. Enim minima vel quas. Quidem eum numquam vero.",
+        "isOneTime": "1",
+        "lat": "49.4953060",
+        "lng": "5.97132962",
+        "address": "17 Place de Stalingrad, 4326 Esch-sur-Alzette, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "7",
+        "title": "Quisquam possimus illum deserunt et cumque tempore.",
+        "desc": "Qui eos aut aliquam illo hic dolorem velit. Est praesentium ut cum rerum laudantium. Soluta quo fugiat corrupti error qui. Est consequatur sint eligendi deserunt voluptatibus exercitationem quo veniam.",
+        "isOneTime": "0",
+        "lat": "49.5893330",
+        "lng": "6.25330717",
+        "address": "12 Am Seiteschgaard, 5331 Mutfort, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "8",
+        "title": "Voluptatem qui veritatis aut cum aliquid.",
+        "desc": "Modi praesentium ad et. Voluptates non expedita ex saepe labore. Est quas necessitatibus optio est voluptates repudiandae cumque. Vel laboriosam cupiditate quia culpa.",
+        "isOneTime": "0",
+        "lat": "49.4692728",
+        "lng": "6.35976741",
+        "address": "93 CR152, 5445 Schengen, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "9",
+        "title": "Sed consectetur sunt neque facere.",
+        "desc": "Fugiat eligendi eum similique dolorem esse maiores earum maiores. Facilis expedita culpa dolorem adipisci velit accusantium. Laudantium debitis nulla molestias ex.",
+        "isOneTime": "1",
+        "lat": "49.4838856",
+        "lng": "6.32390683",
+        "address": "36b Rue Auguste Liesch, 5675 Burmerange, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "10",
+        "title": "Molestiae fugit voluptate nulla nam et beatae repellat est.",
+        "desc": "Sequi harum fugiat eius nihil cupiditate quam aut. Eius enim quos consectetur voluptatum consequuntur nulla consequatur laboriosam.",
+        "isOneTime": "0",
+        "lat": "49.4712821",
+        "lng": "6.47677128",
+        "address": "Im Brühl 14, 66706 Perl, Germany",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "1",
+        "title": "Eveniet inventore unde fugit est aut recusandae consequuntur.",
+        "desc": "Eveniet dolores ad ut expedita est. Deserunt excepturi nihil est ullam quibusdam. Molestias doloribus neque cupiditate ex ut est qui.",
+        "isOneTime": "0",
+        "lat": "49.8634829",
+        "lng": "6.11383759",
+        "address": "2a Rue du Cimetière, 9147 Erpeldange, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "2",
+        "title": "Velit ut doloremque voluptates ut aut.",
+        "desc": "Reiciendis facilis fugiat sit aspernatur sit occaecati. Soluta perspiciatis et molestiae fuga velit quibusdam blanditiis. Suscipit soluta sint velit. Dolorem modi quo eum laboriosam ut adipisci.",
+        "isOneTime": "0",
+        "lat": "49.8468818",
+        "lng": "6.09907471",
+        "address": "41 Grand-Rue, 9050 Ettelbruck, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "3",
+        "title": "Sint voluptas quod omnis sed odio.",
+        "desc": "Amet est velit voluptatem et quam velit amet. Voluptas non ut illo iste est quibusdam doloremque.",
+        "isOneTime": "0",
+        "lat": "49.8337076",
+        "lng": "6.00569092",
+        "address": "22 Rue Principale, 9168 Mertzig, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "4",
+        "title": "Quia quis sit cupiditate corrupti.",
+        "desc": "Accusantium temporibus atque est explicabo. Laudantium consequatur dolores inventore cum est a sit. Est explicabo aliquam perferendis sequi cumque minima quasi fuga. Cupiditate cupiditate consequatur dolorem est sint ut magni assumenda.",
+        "isOneTime": "1",
+        "lat": "49.6766696",
+        "lng": "6.43965088",
+        "address": "11 Rue des Fleurs, 6723 Grevenmacher, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "5",
+        "title": "Est voluptatem accusantium rerum unde.",
+        "desc": "Qui at facere excepturi dolor sit. Molestias et molestiae eaque atque debitis libero vel est. Ut est enim iure nisi nihil.",
+        "isOneTime": "0",
+        "lat": "49.6073049",
+        "lng": "6.57835327",
+        "address": "Industriestraße 1, 54439 Saarburg, Germany",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "6",
+        "title": "Aliquam neque esse non est aliquam voluptates.",
+        "desc": "Quis harum dolores doloribus aut repellat nobis repellendus. Omnis exercitationem sed rerum dolores. Nostrum quia quod officiis.",
+        "isOneTime": "1",
+        "lat": "49.5030726",
+        "lng": "6.58659302",
+        "address": "Saarland-Radweg, 66693 Mettlach, Germany",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "7",
+        "title": "Voluptatum et quo cupiditate.",
+        "desc": "Perferendis minus et nisi ea voluptatem. Rerum sint atque enim inventore et fugit.",
+        "isOneTime": "1",
+        "lat": "49.4352470",
+        "lng": "6.46986328",
+        "address": "31 Rue Route de Launstroff, 57480 Ritzing, France",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "8",
+        "title": "Rerum officiis sapiente fugiat et.",
+        "desc": "Expedita laudantium quis quis ipsa architecto. Nihil velit et nisi voluptas facilis dolor. Sunt quaerat recusandae deserunt repellendus quia. Nam consequatur aut aut aut adipisci quidem.",
+        "isOneTime": "1",
+        "lat": "49.3548056",
+        "lng": "6.18284546",
+        "address": "2 Rue Châteaubriand, 57970 Yutz, France",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "9",
+        "title": "Laboriosam quis quis illo molestias saepe odit ut at.",
+        "desc": "Deserunt reprehenderit error id beatae minus. Tempore dolorem culpa sit dignissimos placeat iste. Eum occaecati sint ad praesentium impedit.",
+        "isOneTime": "0",
+        "lat": "49.5333853",
+        "lng": "6.38557755",
+        "address": "Kahlenberg 4, 66706 Perl, Germany",
+        "fulfilled": 0,
+        "republished": false
+      },
+      {
+        "owner_id": "10",
+        "title": "Delectus aut et in et architecto eligendi.",
+        "desc": "Laudantium odio omnis aliquam vitae. Ratione id perspiciatis facilis et. Odit magni libero qui maiores vitae est esse. Modi vel veritatis esse numquam rerum magnam numquam.",
+        "isOneTime": "1",
+        "lat": "49.5202372",
+        "lng": "6.29614197",
+        "address": "16 Rue de Mondorf, 5690 Ellange, Luxembourg",
+        "fulfilled": 0,
+        "republished": false
+      }
+    ],
+    "fullfilments": [
+      {
+        "request_id": 1,
+        "user_id": 2
+      }
+    ],
+    "messages": [
+      {
+        "message": "Hello Edwin, there is a volunteer! Raymond Rodriquez has signed up to fulfill your request",
+        "fullfilment_id": 1,
+        "sender_id": 2,
+        "receiver_id": 1
+      }
+    ]
+  }
+  

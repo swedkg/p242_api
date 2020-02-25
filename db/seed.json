@@ -1,0 +1,64 @@
+{
+  "users": [
+    {
+      "firstName": "Edwin",
+      "lastName": "Jimenez",
+      "email": "edwin.jimenez@example.com",
+      "password": "password",
+      "picture": "men_34.jpg"
+    },
+    {
+      "firstName": "Raymond",
+      "lastName": "Rodriquez",
+      "email": "raymond.rodriquez@example.com",
+      "password": "password",
+      "picture": "men_81.jpg"
+    }
+  ],
+  "requests": [
+    {
+      "owner_id": "1",
+      "title": "Dolores illo voluptates dolor ab.",
+      "desc": "Excepturi accusamus veritatis voluptatem iure placeat. Voluptas officia est unde laudantium eum voluptas aut tenetur. Odit voluptates iste dolorem nesciunt. Natus repudiandae quibusdam dolor consequatur consequatur dolores.",
+      "isOneTime": "0",
+      "lat": "49.5940598",
+      "lng": "6.0273813",
+      "address": "Avenue de Luxembourg, Bertrange, Luxembourg",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "2",
+      "title": "Optio cum qui at.",
+      "desc": "Qui distinctio dicta et provident ut doloremque. Voluptatem inventore voluptatum nihil dolore illum culpa cumque expedita. Voluptatibus quisquam omnis iusto dolorem et.",
+      "isOneTime": "0",
+      "lat": "49.5018372",
+      "lng": "6.27013394",
+      "address": "3 Rue Emile Moselly, 57570 Mondorff, France",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "1",
+      "title": "Eveniet inventore unde fugit est aut recusandae consequuntur.",
+      "desc": "Eveniet dolores ad ut expedita est. Deserunt excepturi nihil est ullam quibusdam. Molestias doloribus neque cupiditate ex ut est qui.",
+      "isOneTime": "0",
+      "lat": "49.8634829",
+      "lng": "6.11383759",
+      "address": "2a Rue du Cimetière, 9147 Erpeldange, Luxembourg",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "2",
+      "title": "Velit ut doloremque voluptates ut aut.",
+      "desc": "Reiciendis facilis fugiat sit aspernatur sit occaecati. Soluta perspiciatis et molestiae fuga velit quibusdam blanditiis. Suscipit soluta sint velit. Dolorem modi quo eum laboriosam ut adipisci.",
+      "isOneTime": "0",
+      "lat": "49.8468818",
+      "lng": "6.09907471",
+      "address": "41 Grand-Rue, 9050 Ettelbruck, Luxembourg",
+      "fulfilled": 0,
+      "republished": false
+    }
+  ]
+}

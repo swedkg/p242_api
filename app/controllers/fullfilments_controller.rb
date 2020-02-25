@@ -1,3 +1,7 @@
+# TODO:: check the guide https://guides.rubyonrails.org/active_record_callbacks.html
+# TODO: use ActionCable to notify the frontend of changes in the db
+
+
 class FullfilmentsController < ApplicationController
   # before_action :authenticate_user! , except: [:index]
   before_action :authenticate_user!
