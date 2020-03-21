@@ -2,6 +2,7 @@ class MessagesController < ApplicationController
   # before_action :authenticate_user! , except: [:index]
   before_action :authenticate_user!
   before_action :set_message, only: [:edit, :destroy]
+  after_action :app_status 
 
   # GET /messages
   # GET /messages.json
@@ -12,6 +13,7 @@ class MessagesController < ApplicationController
       .or(Message.where(:receiver_id=>user_id))
       .order(:created_at)
       # .group(:fullfilment_id).count
+      puts @message
     else
       @message = Message.all
     end
@@ -41,6 +43,7 @@ class MessagesController < ApplicationController
   # GET /messages/1
   # GET /messages/1.json
   def show
+    puts params
     @message = Message.where(id: params[:id])
     if @message.exists?
       render json: @message, status: :ok

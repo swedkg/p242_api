@@ -1,6 +1,7 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
   before_action :set_request, only: [:update, :destroy]
+  after_action :app_status 
 
   # GET /requests
   def index
@@ -69,6 +70,7 @@ class RequestsController < ApplicationController
         }
       })
     }
+
   end
 
   # GET /requests/1
@@ -85,7 +87,6 @@ class RequestsController < ApplicationController
   def create
     # render json: {status: "created"},status: :created
     @request = Request.new(request_params)
-    
     if @request.save
       render json: @request, status: :created, location: @request
     else
@@ -106,20 +107,6 @@ class RequestsController < ApplicationController
   # DELETE /requests/1
   def destroy
     @request.destroy
-  end
-
-  # GET /requests/status
-  def status
-    requests= Request.all
-    # unfulfilled=[]
-    # requestsAll= Request.all.count
-    # unfulfilled= Request.where(:status =>false).count
-
-    unfulfilled=requests.select do |elem|
-      elem.fulfilled == false
-    end
-    time = Time.new.inspect
-    render json: {requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}}, status: :ok
   end
 
   private

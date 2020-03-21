@@ -12,12 +12,12 @@ Rails.application.routes.draw do
   # resources :requests, except: [:destroy, :update, :show]
   # TODO: why this ^^ makes the test fail?
   
-  resources :requests, except: [:destroy, :update]
-  resources :fullfilments, only: [:index, :create, :update]
-  resources :messages, only: [:index, :create]
+  resources :requests #, except: [:destroy, :update]
+  resources :fullfilments #, only: [:index, :create, :update]
+  resources :messages #, only: [:index, :create]
   # resources :sessions
-  resources :sessions, only: [:create, :logout]
-  get '/platform/:status', to: 'requests#status'
+  resources :sessions #, only: [:create, :logout]
+  # get '/platform/:status', to: 'requests#status'
   delete '/user/:logout', to: 'sessions#logout'
   
 end

@@ -39,7 +39,7 @@ module P242beApi
         resource "*",
                  headers: :any,
                  methods: [:get, :patch, :put, :delete, :post, :options],
-                 expose: ["X-Total-Count"]
+                 expose: ["X-Total-Count", "auth-token"]
       end
     end
 

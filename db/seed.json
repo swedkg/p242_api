@@ -3,14 +3,14 @@
     {
       "firstName": "Edwin",
       "lastName": "Jimenez",
-      "email": "edwin.jimenez@example.com",
+      "email": "user@example.com",
       "password": "password",
       "picture": "men_34.jpg"
     },
     {
       "firstName": "Raymond",
       "lastName": "Rodriquez",
-      "email": "raymond.rodriquez@example.com",
+      "email": "user1@example.com",
       "password": "password",
       "picture": "men_81.jpg"
     }

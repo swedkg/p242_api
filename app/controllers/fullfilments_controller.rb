@@ -1,11 +1,11 @@
 # TODO:: check the guide https://guides.rubyonrails.org/active_record_callbacks.html
 # TODO: use ActionCable to notify the frontend of changes in the db
 
-
 class FullfilmentsController < ApplicationController
   # before_action :authenticate_user! , except: [:index]
   before_action :authenticate_user!
   before_action :set_fullfilment, only: [:destroy]
+  after_action :app_status 
 
   # GET /fullfilments
   # GET /fullfilments.json
@@ -124,4 +124,5 @@ class FullfilmentsController < ApplicationController
     def fullfilment_params
       params.permit(:request_id, :user_id, :status, :id, :fullfilment)
     end
+
 end

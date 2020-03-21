@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   # before_action :authenticate_user! , except: [:create]
+  # after_action :app_status 
 
   def sign_in_as(params)
     post "/sessions", params: { email: params[email], password: params[password], authentication_token:params[authentication_token] }
