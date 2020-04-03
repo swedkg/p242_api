@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
 
   def app_status
     requests= Request.all
-    # online_users=User.where("updated_at > ?", 5.minutes.ago).count
+    online_users=User.where(online: true).count
     # unfulfilled=[]
     # requestsAll= Request.all.count
     # unfulfilled= Request.where(:status =>false).count
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
     end
     time = Time.new.inspect
     # puts current_user.as_json
-    ActionCable.server.broadcast "web_notifications_channel", {requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}}
+    ActionCable.server.broadcast "web_notifications_channel", {requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}, online_users: online_users}
   end
 
 end

@@ -15,7 +15,7 @@ module ApplicationCable
       # (?<==)[a-zA-Z\d]
       query_string = request.headers['QUERY_STRING']
       # authentication_token = query_string.scan(/(?<==)[a-zA-Z\d]/).join()
-      authentication_token = query_string.remove("authentication_token=")
+      authentication_token = query_string.remove("room=")
       user = User.where(authentication_token: authentication_token)
       puts query_string
       puts authentication_token
@@ -34,30 +34,3 @@ module ApplicationCable
     end
   end
 end
-
-  # class Connection < ActionCable::Connection::Base
-  #   # identified_by :current_user
-    
-  #   def connect
-  #     self.current_user = find_verified_user_from_cookies
-  #   end
-
-  #   private
-  #   def find_verified_user_from_cookies
-      
-  #     current_user = User.find_by_id(cookies.signed[:user_id])
-
-  #     if current_user
-  #       current_user
-  #       puts "---------"
-  #       puts current_user.as_json
-  #       puts "---------"
-  #     else
-  #       reject_unauthorized_connection
-  #       puts "connection refused"
-  #     end
-  #   end
-  # end
-
-
-# end

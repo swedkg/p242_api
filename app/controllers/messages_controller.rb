@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   # before_action :authenticate_user! , except: [:index]
   before_action :authenticate_user!
   before_action :set_message, only: [:edit, :destroy]
-  after_action :app_status 
+  # after_action :app_status 
 
   # GET /messages
   # GET /messages.json
@@ -68,6 +68,18 @@ class MessagesController < ApplicationController
     # render json: {status: "It is nice to see you"}, status: :ok
     @message = Message.new(message_params)
     if @message.save
+      room = User.find(@message.receiver_id).authentication_token
+      receiver = User.find(@message.receiver_id)
+      puts "--------- create ------------"
+      puts @message.as_json
+      puts room
+      # ActionCable.server.broadcast("web_notifications_channel", room: room, message: @message.as_json)
+      
+      # send message to specific subscriber
+      MessagingChannel.broadcast_to(receiver, room: room, message: @message.as_json)
+      
+      puts "---------------------"
+      # ActionCable.server.broadcast "web_notifications_channel:"+room, message: @message.as_json
       render json: @message, status: :created
     else
       render json: @message.errors, status: :unprocessable_entity

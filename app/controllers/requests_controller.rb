@@ -1,7 +1,7 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
   before_action :set_request, only: [:update, :destroy]
-  after_action :app_status 
+  # after_action :app_status 
 
   # GET /requests
   def index

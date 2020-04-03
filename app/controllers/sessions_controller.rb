@@ -15,6 +15,7 @@ class SessionsController < ApplicationController
       else
         image = nil
       end
+      user.update(online: true)
       render json: user.as_json(only: [:id, :email, :authentication_token, :firstName, :lastName]).merge({image: image}), status: :created
     else
       if (!user) 
@@ -33,7 +34,9 @@ class SessionsController < ApplicationController
   def logout
    if current_user
       current_user.authentication_token = nil
+      current_user.online = false
       if (current_user.save!)
+        # current_user.update(online: false)
         render json: {message: "User logged out" }, status: :ok
       end
     else
