@@ -66,21 +66,28 @@ class MessagesController < ApplicationController
   def create
     # puts("It is nice to see you")
     # render json: {status: "It is nice to see you"}, status: :ok
-    @message = Message.new(message_params)
+    @message = Message.new(message_params.except(:users, :request_id))
+    users = message_params[:users]
+    puts "---------"
+    puts users
+    puts "---------"
     if @message.save
       room = User.find(@message.receiver_id).authentication_token
       receiver = User.find(@message.receiver_id)
       puts "--------- create ------------"
       puts @message.as_json
       puts room
+      
+      pubMessage = @message.as_json().merge({users: users, request_id: message_params[:request_id]})
+      
       # ActionCable.server.broadcast("web_notifications_channel", room: room, message: @message.as_json)
       
       # send message to specific subscriber
-      MessagingChannel.broadcast_to(receiver, room: room, message: @message.as_json)
+      MessagingChannel.broadcast_to(receiver, message: pubMessage)
       
       puts "---------------------"
       # ActionCable.server.broadcast "web_notifications_channel:"+room, message: @message.as_json
-      render json: @message, status: :created
+      render json: pubMessage, status: :created
     else
       render json: @message.errors, status: :unprocessable_entity
     end
@@ -117,6 +124,6 @@ class MessagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def message_params
-      params.except(:newMessage).permit(:id, :message, :fullfilment_id, :sender_id, :receiver_id , :user_id)
+      params.permit(:id, :message, :fullfilment_id, :sender_id, :receiver_id , :user_id, :request_id, users: {})
     end
 end
