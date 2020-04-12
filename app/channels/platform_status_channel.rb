@@ -43,7 +43,7 @@ class PlatformStatusChannel < ApplicationCable::Channel
     unfulfilled=requests.select do |elem|
       elem.fulfilled == false
     end
-    time = Time.new.inspect
+    time = Time.new
     # PlatformStatusChannel.broadcast_to(current_user, requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}, online_users: online_users)
     ActionCable.server.broadcast "platform_status_channel", body: {platform_status: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}}, online_users: online_users, type: "status"
   end

@@ -139,8 +139,8 @@ class FullfilmentsController < ApplicationController
         
         # TODO: we need to set the type in order to be able to read
         # both messages and request in the front end
-        MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
-        MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
+        MessagingChannel.broadcast_to(pubSender, body: pubRequest[0], type: "request")
+        MessagingChannel.broadcast_to(pubReceiver, body: pubRequest[0], type: "request")
 
         puts "-------------------------------- pubsub --------------------------------"
         puts newMessage.as_json
