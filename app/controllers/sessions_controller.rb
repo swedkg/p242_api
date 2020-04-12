@@ -37,6 +37,7 @@ class SessionsController < ApplicationController
       current_user.online = false
       if (current_user.save!)
         # current_user.update(online: false)
+        app_status
         render json: {message: "User logged out" }, status: :ok
       end
     else

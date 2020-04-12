@@ -83,7 +83,7 @@ class MessagesController < ApplicationController
       # ActionCable.server.broadcast("web_notifications_channel", room: room, message: @message.as_json)
       
       # send message to specific subscriber
-      MessagingChannel.broadcast_to(receiver, message: pubMessage)
+      MessagingChannel.broadcast_to(receiver, body: pubMessage, type: "message")
       
       puts "---------------------"
       # ActionCable.server.broadcast "web_notifications_channel:"+room, message: @message.as_json

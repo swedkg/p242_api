@@ -5,7 +5,11 @@ class RequestsController < ApplicationController
 
   # GET /requests
   def index
-    @requests = Request.where(fulfilled: false)
+    if params[:request_id]
+      @requests = Request.where(id: params[:request_id])
+    else
+      @requests = Request.where(fulfilled: false)
+    end
     
     # .where(:republised => [1,2])
 

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
     end
     time = Time.new.inspect
     # puts current_user.as_json
-    ActionCable.server.broadcast "web_notifications_channel", {requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}, online_users: online_users}
+    ActionCable.server.broadcast "platform_status_channel", body: {platform_status: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}}, online_users: online_users, type: "status"
   end
 
 end

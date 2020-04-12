@@ -3,9 +3,9 @@
 
 class FullfilmentsController < ApplicationController
   # before_action :authenticate_user! , except: [:index]
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   before_action :set_fullfilment, only: [:destroy]
-  after_action :app_status 
+  # after_action :app_status 
 
   # GET /fullfilments
   # GET /fullfilments.json
@@ -77,16 +77,103 @@ class FullfilmentsController < ApplicationController
         @receiver = @fullfilment.request.owner
 
         @message= "Hello " + @receiver.firstName + ", there is a volunteer! " + @sender.firstName + " " + @sender.lastName + " has signed up to fulfill your request"
-        # puts(fullfilment_params.to_json, @sender_id, @sender.to_json,@request.to_json, @request[:id], @message)
-
-        m = Message.new(:fullfilment => @fullfilment, :sender => @sender, :receiver => @receiver, :message => @message)
-        m.save
-        if m.save
+        
+        newMessage = Message.new(:fullfilment => @fullfilment, :sender => @sender, :receiver => @receiver, :message => @message)
+        newMessage.save
+        
+        
+        if newMessage.save
           render json: @fullfilment, status: :created
-        else
-          render json: {status: "error", message: "Can't create message"}, status: :unprocessable_entity  
-        end
+
+          # brodcast request to both subscribers
+        # so we can update their Store
+        # MessagingChannel.broadcast_to(receiver, message: pubMessage)
+        
+        pubRequest = Request.where(id: @request.id).map { |r|
+          # @user_ids = m.fullfilments.pluck(:user_id)
+          @collection = r.responders
+          .pluck(:user_id, :firstName, :lastName)
+          
+          @details = @collection.map{
+            |user_id, firstName, lastName|
+            {
+              id: user_id,
+              firstName: firstName,
+              lastName: lastName,
+              fullfilment: r.responders.find(user_id).fullfilments[0]
+            }
+          }
+          
+          @user_ids = @details.map{ |user| user[:id] }
+          
+          numOfResponders = @user_ids.length
+          
+          # puts(r.republished)
+          time_shift_24h = r.created_at < DateTime.now.ago(24*3600)
+          if (r.republished == 0) 
+            if (numOfResponders >= 5)
+              r.republished = 1
+            end
+          end
+    
+          if (r.republished == 2)
+            if (r.updated_at < DateTime.now.ago(60))
+              Request.find(r.id).update(fulfilled: true)
+              r.fulfilled = true
+            end
+          end
+          
+          
+          r.as_json.merge({
+            fulfilled_at: r.updated_at < DateTime.now.ago(60),
+            responders: {
+              ids: @user_ids,
+              details: @details
+            }
+            })
+          }
+          
+        pubSender = User.find(@sender.id)
+        pubReceiver = User.find(@receiver.id)
+        
+        
+        # TODO: we need to set the type in order to be able to read
+        # both messages and request in the front end
+        MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
+        MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
+
+        puts "-------------------------------- pubsub --------------------------------"
+        puts newMessage.as_json
+        puts "--"
+        pubMessage = newMessage.as_json().merge({
+          fullfilment_status: true,
+          users: {
+            sender: {
+              id: @sender.id,
+              firstName: pubSender.firstName,
+              lastName: pubSender.lastName,
+              },
+            receiver: {
+              id: @receiver.id,
+              firstName: pubReceiver.firstName,
+              lastName: pubReceiver.lastName,
+              }
+            }
+          })
+
+        # puts fullfilment_params.as_json
+        puts pubMessage.as_json
+        # puts pubSender.as_json
+        # puts pubReceiver.as_json
+        puts "------------------------------------------------------------------------------------------------"
+        
+        MessagingChannel.broadcast_to(pubSender, body: pubMessage.as_json(), type: "message")
+        MessagingChannel.broadcast_to(pubReceiver, body: pubMessage.as_json(), type: "message")
+        
       else
+        render json: {status: "error", message: "Can't create message"}, status: :unprocessable_entity  
+      end
+    else
         render json: @fullfilment.errors, status: :unprocessable_entity
       end
   end

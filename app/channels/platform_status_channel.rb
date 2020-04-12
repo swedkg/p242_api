@@ -12,7 +12,7 @@
 
 class PlatformStatusChannel < ApplicationCable::Channel
   def subscribed
-    puts "PlatformStatusChannel"
+    puts "----------------------------------- PlatformStatusChannel subscribed -----------------------------------"
     # stream_for(current_user, coder: ActiveSupport::JSON)
     stream_from "platform_status_channel"
     app_status
@@ -30,7 +30,8 @@ class PlatformStatusChannel < ApplicationCable::Channel
     end
 
   def unsubscribed
-    app_status
+    # we unsubscride before logout, this does not work
+    # app_status
     # Any cleanup needed when channel is unsubscribed
   end
 
@@ -44,7 +45,7 @@ class PlatformStatusChannel < ApplicationCable::Channel
     end
     time = Time.new.inspect
     # PlatformStatusChannel.broadcast_to(current_user, requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}, online_users: online_users)
-    ActionCable.server.broadcast "platform_status_channel", {requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}, online_users: online_users}
+    ActionCable.server.broadcast "platform_status_channel", body: {platform_status: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}}, online_users: online_users, type: "status"
   end
 end
 
