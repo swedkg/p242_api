@@ -85,7 +85,7 @@ class FullfilmentsController < ApplicationController
         if newMessage.save
           render json: @fullfilment, status: :created
 
-          # brodcast request to both subscribers
+        # brodcast request to both subscribers
         # so we can update their Store
         # MessagingChannel.broadcast_to(receiver, message: pubMessage)
         
@@ -104,8 +104,7 @@ class FullfilmentsController < ApplicationController
             }
           }
           
-          @user_ids = @details.map{ |user| user[:id] }
-          
+          @user_ids = @details.map{ |user| user[:id] }          
           numOfResponders = @user_ids.length
           
           # puts(r.republished)
@@ -121,8 +120,7 @@ class FullfilmentsController < ApplicationController
               Request.find(r.id).update(fulfilled: true)
               r.fulfilled = true
             end
-          end
-          
+          end          
           
           r.as_json.merge({
             fulfilled_at: r.updated_at < DateTime.now.ago(60),
@@ -135,12 +133,11 @@ class FullfilmentsController < ApplicationController
           
         pubSender = User.find(@sender.id)
         pubReceiver = User.find(@receiver.id)
-        
-        
+        pubRequest = pubRequest[0]
         # TODO: we need to set the type in order to be able to read
         # both messages and request in the front end
-        MessagingChannel.broadcast_to(pubSender, body: pubRequest[0], type: "request")
-        MessagingChannel.broadcast_to(pubReceiver, body: pubRequest[0], type: "request")
+        MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
+        MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
 
         puts "-------------------------------- pubsub --------------------------------"
         puts newMessage.as_json
@@ -184,8 +181,7 @@ class FullfilmentsController < ApplicationController
     # puts(params)
     @fullfilment = Fullfilment.where(id: params[:id])
     if @fullfilment.exists?
-      @fullfilment.update(fullfilment_params)
-      render json: @fullfilment, status: :ok
+      @fullfilment.update(fullfilment_params)     
     else
       render json: {status: "error", message: "Can't find fullfilment"}, status: :unprocessable_entity
     end
@@ -194,11 +190,72 @@ class FullfilmentsController < ApplicationController
   # DELETE /fullfilments/1
   # DELETE /fullfilments/1.json
   def destroy
+    puts "< - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - - >"
+    fullfilment = @fullfilment
+    puts fullfilment.as_json
+    Message.where(fullfilment_id: fullfilment.id).delete_all
     @fullfilment.destroy
-    respond_to do |format|
-      format.html { redirect_to fullfilments_url, notice: 'Fullfilment was successfully destroyed.' }
-      format.json { head :no_content }
+    if @fullfilment.destroy
+
+      # brodcast request to both subscribers
+      # so we can update their Store
+      puts "-------------------------------- pubsub --------------------------------"
+
+      pubRequest = Request.where(id: fullfilment.request_id).map { |r|
+        # @user_ids = m.fullfilments.pluck(:user_id)
+        @collection = r.responders
+        .pluck(:user_id, :firstName, :lastName)
+        
+        @details = @collection.map{
+          |user_id, firstName, lastName|
+          {
+            id: user_id,
+            firstName: firstName,
+            lastName: lastName,
+            fullfilment: r.responders.find(user_id).fullfilments[0]
+          }
+        }
+        
+        @user_ids = @details.map{ |user| user[:id] }          
+        numOfResponders = @user_ids.length
+        
+        # puts(r.republished)
+        time_shift_24h = r.created_at < DateTime.now.ago(24*3600)
+        if (r.republished == 0) 
+          if (numOfResponders >= 5)
+            r.republished = 1
+          end
+        end
+  
+        if (r.republished == 2)
+          if (r.updated_at < DateTime.now.ago(60))
+            Request.find(r.id).update(fulfilled: true)
+            r.fulfilled = true
+          end
+        end          
+        
+        r.as_json.merge({
+          fulfilled_at: r.updated_at < DateTime.now.ago(60),
+          responders: {
+            ids: @user_ids,
+            details: @details
+          }
+          })
+        }
+      # puts pubRequest.as_json
+      pubRequest = pubRequest[0]
+      pubSender = User.find(pubRequest["owner_id"])
+      pubReceiver = User.find(fullfilment.user_id)
+
+      puts "------------------------------------------------------------------------"
+      # render json: @fullfilment, status: :ok
+      render json: {fullfilment: @fullfilment, pubRequest: pubRequest, pubSender: pubSender, pubReceiver: pubReceiver }, status: :ok
+      MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
+      MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
+      # render json: @fullfilment, status: :ok
     end
+    puts "< - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - - >"
+
   end
 
   private
