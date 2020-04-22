@@ -253,6 +253,8 @@ class FullfilmentsController < ApplicationController
       MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
       MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
       # render json: @fullfilment, status: :ok
+      MessagingChannel.broadcast_to(pubSender, body: {fullfilment_id: fullfilment.id}, type: "remove_orphan_messages")
+      MessagingChannel.broadcast_to(pubReceiver, body: {fullfilment_id: fullfilment.id}, type: "remove_orphan_messages")
     end
     puts "< - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - - >"
 

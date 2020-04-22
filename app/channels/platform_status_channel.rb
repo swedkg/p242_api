@@ -14,6 +14,8 @@ class PlatformStatusChannel < ApplicationCable::Channel
   def subscribed
     puts "----------------------------------- PlatformStatusChannel subscribed -----------------------------------"
     # stream_for(current_user, coder: ActiveSupport::JSON)
+    current_user.online = true
+    current_user.save!
     stream_from "platform_status_channel"
     app_status
     # ActionCable.server.broadcast "web_notifications_channel_#{params[:room]}", message: current_user
@@ -30,8 +32,12 @@ class PlatformStatusChannel < ApplicationCable::Channel
     end
 
   def unsubscribed
-    # we unsubscride before logout, this does not work
-    # app_status
+    puts "---------------------------- unsubscribed ----------------------------"
+    current_user.online = false
+    current_user.save!
+    puts current_user.as_json
+    app_status
+    puts "----------------------------------------------------------------------"
     # Any cleanup needed when channel is unsubscribed
   end
 

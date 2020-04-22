@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   # before_action :authenticate_user! , except: [:index]
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
   before_action :set_message, only: [:edit, :destroy]
   # after_action :app_status 
 
@@ -66,19 +66,20 @@ class MessagesController < ApplicationController
   def create
     # puts("It is nice to see you")
     # render json: {status: "It is nice to see you"}, status: :ok
+
     @message = Message.new(message_params.except(:users, :request_id))
     users = message_params[:users]
-    puts "---------"
-    puts users
-    puts "---------"
+    # puts "---------"
+    # puts users
+    # puts "---------"
     if @message.save
       room = User.find(@message.receiver_id).authentication_token
       receiver = User.find(@message.receiver_id)
-      puts "--------- create ------------"
-      puts @message.as_json
-      puts room
+      # puts "--------- create ------------"
+      # puts @message.as_json
+      # puts room
       
-      pubMessage = @message.as_json().merge({users: users, request_id: message_params[:request_id]})
+      pubMessage = @message.as_json().merge({fullfilment_status: @message.fullfilment.status, users: users, request_id: message_params[:request_id]})
       
       # ActionCable.server.broadcast("web_notifications_channel", room: room, message: @message.as_json)
       
