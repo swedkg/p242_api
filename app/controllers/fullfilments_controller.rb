@@ -100,7 +100,7 @@ class FullfilmentsController < ApplicationController
               id: user_id,
               firstName: firstName,
               lastName: lastName,
-              fullfilment: r.responders.find(user_id).fullfilments[0]
+              fullfilment: r.responders.find(user_id).fullfilments.select{ |f| f.request.id == r.id}.last
             }
           }
           
@@ -144,6 +144,7 @@ class FullfilmentsController < ApplicationController
         puts "--"
         pubMessage = newMessage.as_json().merge({
           fullfilment_status: true,
+          request_id: @request.id,
           users: {
             sender: {
               id: @sender.id,
@@ -212,7 +213,7 @@ class FullfilmentsController < ApplicationController
             id: user_id,
             firstName: firstName,
             lastName: lastName,
-            fullfilment: r.responders.find(user_id).fullfilments[0]
+            fullfilment: r.responders.find(user_id).fullfilments.select{ |f| f.request.id == r.id}.last
           }
         }
         

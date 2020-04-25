@@ -42,7 +42,7 @@ class RequestsController < ApplicationController
           id: user_id,
           firstName: firstName,
           lastName: lastName,
-          fullfilment: r.responders.find(user_id).fullfilments[0]
+          fullfilment: r.responders.find(user_id).fullfilments.select{ |f| f.request.id == r.id}.last
         }
       }
 
