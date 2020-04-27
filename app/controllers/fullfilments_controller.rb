@@ -182,7 +182,7 @@ class FullfilmentsController < ApplicationController
     # puts(params)
     @fullfilment = Fullfilment.where(id: params[:id])
     if @fullfilment.exists?
-      @fullfilment.update(fullfilment_params)     
+      @fullfilment.update(fullfilment_params)
     else
       render json: {status: "error", message: "Can't find fullfilment"}, status: :unprocessable_entity
     end

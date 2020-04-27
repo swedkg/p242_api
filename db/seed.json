@@ -13,6 +13,13 @@
       "email": "user1@example.com",
       "password": "password",
       "picture": "men_81.jpg"
+    },
+    {
+      "firstName": "Mandy",
+      "lastName": "Marshall",
+      "email": "mandy.marshall@example.com",
+      "password": "rYNhve",
+      "picture": "women_44.jpg"
     }
   ],
   "requests": [

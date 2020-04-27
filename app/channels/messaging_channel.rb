@@ -6,8 +6,8 @@ class MessagingChannel < ApplicationCable::Channel
   stream_for(current_user, coder: ActiveSupport::JSON)
   end
 
-  def received(data)
-    puts "------------------- received !!!! -------------------"
+  def message_delivered(data)
+    puts "------------------- delivered !!!! -------------------"
     d =  OpenStruct.new(data)
     message = d.message
     m=Message.find(message["id"])
@@ -27,35 +27,53 @@ class MessagingChannel < ApplicationCable::Channel
     puts m.as_json
     
     # notify the original sender
-    # that the message was received
+    # that the message was delivered
     @sender = User.find(m.sender_id)
-    @receiver = User.find(m.receiver_id)
+    # @receiver = User.find(m.receiver_id)
     # puts current_user.as_json
 
-    pubMessage = m.as_json().merge({
-      fullfilment_status: m.fullfilment.status,
-      users: {
-        sender: {
-          id: @sender.id,
-          firstName: @sender.firstName,
-          lastName: @sender.lastName,
-          },
-        receiver: {
-          id: @receiver.id,
-          firstName: @receiver.firstName,
-          lastName: @receiver.lastName,
-          }
-        },
-      request_id: m.fullfilment.request_id
-      })
+    # we should do something similar here, there is no point for reconstrucint the message
+    MessagingChannel.broadcast_to(@sender, body: {message_id: m.id}, type: "message_delivered")
 
-    puts pubMessage.as_json
+    # pubMessage = m.as_json().merge({
+    #   fullfilment_status: m.fullfilment.status,
+    #   users: {
+    #     sender: {
+    #       id: @sender.id,
+    #       firstName: @sender.firstName,
+    #       lastName: @sender.lastName,
+    #       },
+    #     receiver: {
+    #       id: @receiver.id,
+    #       firstName: @receiver.firstName,
+    #       lastName: @receiver.lastName,
+    #       }
+    #     },
+    #   request_id: m.fullfilment.request_id
+    #   })
+
+    # puts pubMessage.as_json
 
     # MessagingChannel.broadcast_to(@sender, body: pubMessage, type: "message")
 
     puts "-----------------------------------------------------"
   end
-  
+
+  def message_read
+    puts "------------------- message read !!!! -------------------"
+    d =  OpenStruct.new(data)
+    message = d.message
+    m=Message.find(message["id"])
+    # puts m.as_json
+    status = m.status
+
+    m.update(status: 2)
+    
+    @sender = User.find(m.sender_id)
+    MessagingChannel.broadcast_to(@sender, body: {message_id: m.id}, type: "message_delivered")
+
+    puts "-----------------------------------------------------"
+  end
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed

@@ -102,6 +102,13 @@ class RequestsController < ApplicationController
   # PATCH/PUT /requests/1
   def update
     if @request.update(request_params)
+      # update store to all onilne participants that the status has changed
+      # get fulfillments for this request id
+      ## Request.joins(:fullfilments).where(id: 1).count
+      # get an array with all user_id for responders for this request that are online 
+      ##  Fullfilment.where(request_id: 1).joins(:user).where('users.online' => true).pluck(:user_id)
+      # User.find(i)
+      # send websocket
       render json: @request, status: :ok
     else
       render json: @request.errors, status: :unprocessable_entity
