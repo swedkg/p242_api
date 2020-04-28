@@ -6,7 +6,7 @@ class MessagingChannel < ApplicationCable::Channel
   stream_for(current_user, coder: ActiveSupport::JSON)
   end
 
-  def message_delivered(data)
+  def delivered(data)
     puts "------------------- delivered !!!! -------------------"
     d =  OpenStruct.new(data)
     message = d.message
@@ -59,7 +59,7 @@ class MessagingChannel < ApplicationCable::Channel
     puts "-----------------------------------------------------"
   end
 
-  def message_read
+  def read
     puts "------------------- message read !!!! -------------------"
     d =  OpenStruct.new(data)
     message = d.message
@@ -70,7 +70,7 @@ class MessagingChannel < ApplicationCable::Channel
     m.update(status: 2)
     
     @sender = User.find(m.sender_id)
-    MessagingChannel.broadcast_to(@sender, body: {message_id: m.id}, type: "message_delivered")
+    MessagingChannel.broadcast_to(@sender, body: {message_id: m.id}, type: "message_read")
 
     puts "-----------------------------------------------------"
   end
