@@ -6,11 +6,14 @@ class MessagingChannel < ApplicationCable::Channel
   stream_for(current_user, coder: ActiveSupport::JSON)
   end
 
-  def delivered(data)
+  def message_delivered(data)
     puts "------------------- delivered !!!! -------------------"
     d =  OpenStruct.new(data)
-    message = d.message
-    m=Message.find(message["id"])
+    message_id = d.message
+    # puts data
+    # puts d
+    # puts message_id
+    m=Message.find(message_id)
     # puts m.as_json
     status = m.status
     # puts status
@@ -24,12 +27,13 @@ class MessagingChannel < ApplicationCable::Channel
     #     m.update(status: 2)
     # end
 
-    puts m.as_json
+    # puts m.as_json
     
     # notify the original sender
     # that the message was delivered
     @sender = User.find(m.sender_id)
     # @receiver = User.find(m.receiver_id)
+    # puts @sender.as_json
     # puts current_user.as_json
 
     # we should do something similar here, there is no point for reconstrucint the message
@@ -59,18 +63,26 @@ class MessagingChannel < ApplicationCable::Channel
     puts "-----------------------------------------------------"
   end
 
-  def read
-    puts "------------------- message read !!!! -------------------"
+  def message_displayed(data)
+    puts "------------------- message displayed !!!! -------------------"
     d =  OpenStruct.new(data)
-    message = d.message
-    m=Message.find(message["id"])
+    message_id = d.message
+    # puts data
+    # puts d
+    # puts message_id
+    m=Message.find(message_id)
     # puts m.as_json
     status = m.status
 
     m.update(status: 2)
     
     @sender = User.find(m.sender_id)
-    MessagingChannel.broadcast_to(@sender, body: {message_id: m.id}, type: "message_read")
+
+    # puts @sender.as_json
+    # puts current_user.as_json
+
+    
+    MessagingChannel.broadcast_to(@sender, body: {message_id: m.id}, type: "message_displayed")
 
     puts "-----------------------------------------------------"
   end

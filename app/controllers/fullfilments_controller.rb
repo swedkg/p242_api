@@ -250,7 +250,7 @@ class FullfilmentsController < ApplicationController
 
       puts "------------------------------------------------------------------------"
       # render json: @fullfilment, status: :ok
-      render json: {fullfilment: @fullfilment, pubRequest: pubRequest, pubSender: pubSender, pubReceiver: pubReceiver }, status: :ok
+      render json: @fullfilment, status: :ok
       MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
       MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
       # render json: @fullfilment, status: :ok
