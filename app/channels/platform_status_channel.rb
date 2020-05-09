@@ -25,9 +25,14 @@ class PlatformStatusChannel < ApplicationCable::Channel
   end
   
   # rebroadcast a message sent by one client to any other connected clients.
-    def received(data)
-      # puts(data)
-      # puts "+++++++"
+    def public_announcement(data)
+      puts "---------------------------- public announcement !!!! ----------------------------"
+      puts(data)
+      os =  OpenStruct.new(data)
+      request_id = os.message['id']
+      type = os.message['type']
+      ActionCable.server.broadcast "platform_status_channel", request: {id: request_id, fulfilled: true}, type: type
+      puts "---------------------------- -------- ----------------------------"
       # ActionCable.server.broadcast 'web_notifications_channel_#{params[:room]}', message: data
     end
 
