@@ -4,7 +4,7 @@
 #     stream_from "web_notifications_channel"
 #   end
   
-
+ 
 #   def unsubscribed
 #     # Any cleanup needed when channel is unsubscribed
 #   end
@@ -12,7 +12,7 @@
 
 class PlatformStatusChannel < ApplicationCable::Channel
   def subscribed
-    puts "----------------------------------- PlatformStatusChannel subscribed -----------------------------------"
+    puts "-- PlatformStatusChannel subscribed --"
     # stream_for(current_user, coder: ActiveSupport::JSON)
     current_user.online = true
     current_user.save!
@@ -20,29 +20,28 @@ class PlatformStatusChannel < ApplicationCable::Channel
     app_status
     # ActionCable.server.broadcast "web_notifications_channel_#{params[:room]}", message: current_user
     # ActionCable.server.broadcast "web_notifications_channel", {requests: {"total": requests.length, "unfulfilled": unfulfilled.length, "time": time}, online_users: online_users}
-    puts "---------------"
+    # puts "-- - --"
 
   end
   
   # rebroadcast a message sent by one client to any other connected clients.
     def public_announcement(data)
-      puts "---------------------------- public announcement !!!! ----------------------------"
+      puts "-- public announcement !!!! --"
       puts(data)
       os =  OpenStruct.new(data)
       request_id = os.message['id']
       type = os.message['type']
       ActionCable.server.broadcast "platform_status_channel", request: {id: request_id, fulfilled: true}, type: type
-      puts "---------------------------- -------- ----------------------------"
+      # puts "-- - --"
       # ActionCable.server.broadcast 'web_notifications_channel_#{params[:room]}', message: data
     end
 
   def unsubscribed
-    puts "---------------------------- unsubscribed ----------------------------"
+    puts "-- unsubscribed --"
     current_user.online = false
     current_user.save!
-    puts current_user.as_json
     app_status
-    puts "----------------------------------------------------------------------"
+    # puts "-- - --"
     # Any cleanup needed when channel is unsubscribed
   end
 

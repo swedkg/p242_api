@@ -18,12 +18,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       password: "password",
     }
 
-    user = {
-      email: "test@example.com",
-      password: "password",
-    }
+    # user = {
+    #   email: "test@example.com",
+    #   password: "password",
+    # }
 
-    setup { sign_in_as user }
+    # setup { sign_in_as user }
 
     # assert_response 201
     assert_equal("John", json_response["firstName"])

@@ -7,13 +7,23 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   # users_url= "/users"
 
   test "create user" do
+    file = fixture_file_upload(Rails.root.join("/files", "profile_pic_1.jpg"), "image/jpg").to_s
+
+    puts file
+
+
+    # TODO: pic attachment not working
+
     post users_path,
     params: {
-      firstName: "jane",
+      firstName: "Jon",
       lastName: "Doe",
       password: "password",
-      email: "jane.doe@example.com",
+      email: "createUser@example.com",
+      picture: file
     }
+
+    puts json_response
 
     assert_equal 201, @response.status
   end

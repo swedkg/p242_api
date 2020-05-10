@@ -29,16 +29,16 @@ class RequestsControllerTest < ActionDispatch::IntegrationTest
     assert_response 201
   end
 
-  test "shoud get platform status" do
+  # test "shoud get platform status" do
     
-    get '/platform/status'
+  #   get '/platform/status'
 
-    assert_response 200
-    assert json_response['requests']['total']
-    assert json_response['requests']['unfulfilled']
-    assert json_response['requests']['time']
+  #   assert_response 200
+  #   assert json_response['requests']['total']
+  #   assert json_response['requests']['unfulfilled']
+  #   assert json_response['requests']['time']
 
-  end
+  # end
 
 
 end
