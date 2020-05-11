@@ -5,7 +5,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get user messages" do
 
-    user = users(:two).as_json
+    user = users(:user_two).as_json
 
     get messages_url, params: { user_id: user['id'] }, headers: { 'X-User-Email' => user['email'], 'X-User-Token' => user['authentication_token'] }
 
@@ -17,8 +17,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   
   test "should create message" do
     
-    sender = users(:one).as_json
-    receiver = users(:two).as_json
+    sender = users(:user_one).as_json
+    receiver = users(:user_two).as_json
     request = requests(:request_one).as_json
     fullfilment = fullfilments(:fullfilment_one).as_json    
     

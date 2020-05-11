@@ -23,7 +23,7 @@ class PlatformStatusChannelTest < ActionCable::Channel::TestCase
 
   def test_subscribed
 
-    stub_connection(current_user: users(:one))
+    stub_connection(current_user: users(:user_one))
 
     subscribe
 
@@ -37,7 +37,7 @@ class PlatformStatusChannelTest < ActionCable::Channel::TestCase
 
   def test_unsubscribed
 
-    stub_connection(current_user: users(:one))
+    stub_connection(current_user: users(:user_one))
     subscribe
     
     # Asserts that the channel subscribes connection to a stream

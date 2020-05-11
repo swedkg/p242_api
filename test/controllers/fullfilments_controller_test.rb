@@ -6,7 +6,7 @@ class FullfilmentsControllerTest < ActionDispatch::IntegrationTest
   
   test "get fullfilments index" do 
     
-    user = users(:two).as_json
+    user = users(:user_two).as_json
 
     get fullfilments_url, params: { user_id: user['id'] }, headers: { 'X-User-Email' => user['email'], 'X-User-Token' => user['authentication_token'] }
 
@@ -16,7 +16,7 @@ class FullfilmentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create fullfilments" do
 
-    user = users(:two)
+    user = users(:user_two)
     request = requests(:request_one)
 
     assert_difference('Fullfilment.count') do

@@ -9,7 +9,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "login user" do 
     
     file = fixture_file_upload(Rails.root.join("/files", "profile_pic_1.jpg"), "image/jpg")
-    user = users(:one)
+    user = users(:user_one)
     user.picture.attach(io: File.open(file), filename: "profile_pic_1.jpg", content_type: "image/jpg")
     
     post "/sessions",
@@ -46,8 +46,8 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   # end
   
   # setup do
-  #   @current_user = users(:one)
-  #   current_user = users(:one)
+  #   @current_user = users(:user_one)
+  #   current_user = users(:user_one)
   # end
 
 

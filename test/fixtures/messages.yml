@@ -1,10 +1,10 @@
-one:
-  message: Hello, there is a volunteer
+message_one:
+  message: Hello, our fixtures are wrong
   fullfilment_id: <%= ActiveRecord::FixtureSet.identify(:fullfilment_one) %>
-  sender: <%= ActiveRecord::FixtureSet.identify(:one) %>
-  receiver: <%= ActiveRecord::FixtureSet.identify(:two) %>
-two:
+  sender_id: <%= ActiveRecord::FixtureSet.identify(:user_one) %>
+  receiver_id: <%= ActiveRecord::FixtureSet.identify(:user_two) %>
+message_two:
   message: Thank you for your help
   fullfilment_id: <%= ActiveRecord::FixtureSet.identify(:fullfilment_one) %>
-  sender: <%= ActiveRecord::FixtureSet.identify(:two) %>
-  receiver: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  sender_id: <%= ActiveRecord::FixtureSet.identify(:user_two) %>
+  receiver_id: <%= ActiveRecord::FixtureSet.identify(:user_one) %>
