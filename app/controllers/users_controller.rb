@@ -20,8 +20,6 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
-    puts(user_params)
-    puts @user.as_json
     if @user.save
       image = url_for(@user.picture)
       render json: @user.as_json(only: [:id, :email, :authentication_token, :firstName, :lastName]).merge({image: image}), status: :created

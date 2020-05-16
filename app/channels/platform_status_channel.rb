@@ -24,7 +24,7 @@ class PlatformStatusChannel < ApplicationCable::Channel
 
   end
   
-  # rebroadcast a message sent by one client to any other connected clients.
+  # rebroadcast a message sent by one client to all other connected clients.
     def public_announcement(data)
       puts "-- public announcement !!!! --"
       puts(data)
