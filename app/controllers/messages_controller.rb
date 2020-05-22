@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
       .or(Message.where(:receiver_id=>user_id))
       .order(:created_at)
       # .group(:fullfilment_id).count
-      puts @message
+      # puts @message
     else
       @message = Message.all
     end
@@ -43,7 +43,7 @@ class MessagesController < ApplicationController
   # GET /messages/1
   # GET /messages/1.json
   def show
-    puts params
+    # puts params
     @message = Message.where(id: params[:id])
     if @message.exists?
       render json: @message, status: :ok
@@ -86,7 +86,7 @@ class MessagesController < ApplicationController
       # send message to specific subscriber
       MessagingChannel.broadcast_to(receiver, body: pubMessage, type: "message")
       
-      puts "---------------------"
+      # puts "---------------------"
       # ActionCable.server.broadcast "web_notifications_channel:"+room, message: @message.as_json
       render json: pubMessage, status: :created
     else
@@ -99,7 +99,7 @@ class MessagesController < ApplicationController
   def update
     @message = Message.where(id: params[:id])
     if @message.exists?
-      puts("Are we here?")
+      # puts("Are we here?")
       @message.update(message_params)
       render json: @message, status: :created
     else

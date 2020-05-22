@@ -13,22 +13,6 @@ class RequestsController < ApplicationController
     
     # .where(:republised => [1,2])
 
-
-    # Handled by back end
-    # fulfilled:  false (default): display on UI
-    #             true (manually set): hide from UI, disallow republish, consider it complete
-    #
-    # republish:  0 (default)
-    #             1 (allow): responders >= 5 && alive> 24h -> display button on UI, hide from map 
-    #             2 (republished) && alive> 24h -> set as fulfilled
-    
-    # Handled by UI
-    # visible:    1 (default)
-    #             0 (hidden): responders >= 5 -> hide from map
-
-
-    # 
-
     # Request.find(1).fullfilments.pluck(:user_id)
 
     render json: @requests.map { |r|
@@ -50,24 +34,9 @@ class RequestsController < ApplicationController
 
       numOfResponders = @user_ids.length
 
-      # puts(r.republished)
-      time_shift_24h = r.created_at < DateTime.now.ago(24*3600)
-      if (r.republished == 0) 
-        if (numOfResponders >= 5)
-          r.republished = 1
-        end
-      end
+      set_request_status(r, numOfResponders)
 
-      if (r.republished == 2)
-        if (r.updated_at < DateTime.now.ago(60))
-          Request.find(r.id).update(fulfilled: true)
-          r.fulfilled = true
-        end
-      end
-
-
-      r.as_json.merge({
-        fulfilled_at: r.updated_at < DateTime.now.ago(60),
+      r.as_json(except: [:created_at, :updated_at]).merge({
         responders: {
           ids: @user_ids,
           details: @details
@@ -92,6 +61,39 @@ class RequestsController < ApplicationController
     # render json: {status: "created"},status: :created
     @request = Request.new(request_params)
     if @request.save
+
+      pubRequest = Request.where(id: @request.id).map { |r|
+        # @user_ids = m.fullfilments.pluck(:user_id)
+        @collection = r.responders
+        .pluck(:user_id, :firstName, :lastName)
+        
+        @details = @collection.map{
+          |user_id, firstName, lastName|
+          {
+            id: user_id,
+            firstName: firstName,
+            lastName: lastName,
+            fullfilment: r.responders.find(user_id).fullfilments.select{ |f| f.request.id == r.id}.last
+          }
+        }
+        
+        @user_ids = @details.map{ |user| user[:id] }          
+        numOfResponders = @user_ids.length
+        
+        r.as_json(except: [:created_at, :updated_at]).merge({
+          updated_at: r.updated_at,
+          responders: {
+            ids: @user_ids,
+            details: @details
+          }
+          })
+        }
+        
+        pubRequest = pubRequest[0]
+        
+      # broadcast the request to all users
+      ActionCable.server.broadcast "platform_status_channel", body: pubRequest, type: "request"
+
       render json: @request, status: :created, location: @request
     else
       # puts("we are out")

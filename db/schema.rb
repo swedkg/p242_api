@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_19_095212) do
+ActiveRecord::Schema.define(version: 2020_05_22_103656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 2020_04_19_095212) do
     t.string "address"
     t.integer "republished", default: 0
     t.boolean "fulfilled", default: false
+    t.datetime "allow_republish_at"
     t.index ["owner_id"], name: "index_requests_on_owner_id"
   end
 

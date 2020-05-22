@@ -9,8 +9,8 @@ class SessionsController < ApplicationController
   def create
     user = User.where(email: params[:email]).first
 
-    puts params
-    puts user.as_json
+    # puts params
+    # puts user.as_json
     if user&.valid_password?(params[:password])
       if(user.picture.attached?)
         image = url_for(user.picture)

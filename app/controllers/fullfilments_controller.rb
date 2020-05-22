@@ -1,5 +1,4 @@
-# TODO:: check the guide https://guides.rubyonrails.org/active_record_callbacks.html
-# TODO: use ActionCable to notify the frontend of changes in the db
+# check the guide https://guides.rubyonrails.org/active_record_callbacks.html
 
 class FullfilmentsController < ApplicationController
   # before_action :authenticate_user! , except: [:index]
@@ -70,10 +69,6 @@ class FullfilmentsController < ApplicationController
         @sender = @fullfilment.user
         @request = @fullfilment.request
 
-        if (@request.fullfilments.count == 3)
-          @request.update(republished: 1)
-        end
-
         @receiver = @fullfilment.request.owner
 
         @message= "Hello " + @receiver.firstName + ", there is a volunteer! " + @sender.firstName + " " + @sender.lastName + " has signed up to fulfill your request"
@@ -104,26 +99,12 @@ class FullfilmentsController < ApplicationController
             }
           }
           
-          @user_ids = @details.map{ |user| user[:id] }          
+          @user_ids = @details.map{ |user| user[:id] }
+
           numOfResponders = @user_ids.length
+          set_request_status(r, numOfResponders)
           
-          # puts(r.republished)
-          time_shift_24h = r.created_at < DateTime.now.ago(24*3600)
-          if (r.republished == 0) 
-            if (numOfResponders >= 5)
-              r.republished = 1
-            end
-          end
-    
-          if (r.republished == 2)
-            if (r.updated_at < DateTime.now.ago(60))
-              Request.find(r.id).update(fulfilled: true)
-              r.fulfilled = true
-            end
-          end          
-          
-          r.as_json.merge({
-            fulfilled_at: r.updated_at < DateTime.now.ago(60),
+          r.as_json(except: [:created_at, :updated_at]).merge({
             responders: {
               ids: @user_ids,
               details: @details
@@ -131,17 +112,14 @@ class FullfilmentsController < ApplicationController
             })
           }
           
+          pubRequest = pubRequest[0]
+          
+        # broadcast the request to all users
+        ActionCable.server.broadcast "platform_status_channel", body: pubRequest, type: "request"
+        
+        # send first message to both parties  
         pubSender = User.find(@sender.id)
         pubReceiver = User.find(@receiver.id)
-        pubRequest = pubRequest[0]
-        # TODO: we need to set the type in order to be able to read
-        # both messages and request in the front end
-        MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
-        MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
-
-        puts "-------------------------------- pubsub --------------------------------"
-        puts newMessage.as_json
-        puts "--"
         pubMessage = newMessage.as_json().merge({
           fullfilment_status: true,
           request_id: @request.id,
@@ -158,12 +136,6 @@ class FullfilmentsController < ApplicationController
               }
             }
           })
-
-        # puts fullfilment_params.as_json
-        puts pubMessage.as_json
-        # puts pubSender.as_json
-        # puts pubReceiver.as_json
-        puts "------------------------------------------------------------------------------------------------"
         
         MessagingChannel.broadcast_to(pubSender, body: pubMessage.as_json(), type: "message")
         MessagingChannel.broadcast_to(pubReceiver, body: pubMessage.as_json(), type: "message")
@@ -191,16 +163,16 @@ class FullfilmentsController < ApplicationController
   # DELETE /fullfilments/1
   # DELETE /fullfilments/1.json
   def destroy
-    puts "< - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - - >"
+    # puts "< - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - - >"
     fullfilment = @fullfilment
-    puts fullfilment.as_json
+    # puts fullfilment.as_json
     Message.where(fullfilment_id: fullfilment.id).delete_all
     @fullfilment.destroy
     if @fullfilment.destroy
 
       # brodcast request to both subscribers
       # so we can update their Store
-      puts "-------------------------------- pubsub --------------------------------"
+      # puts "-------------------------------- pubsub --------------------------------"
 
       pubRequest = Request.where(id: fullfilment.request_id).map { |r|
         # @user_ids = m.fullfilments.pluck(:user_id)
@@ -219,24 +191,10 @@ class FullfilmentsController < ApplicationController
         
         @user_ids = @details.map{ |user| user[:id] }          
         numOfResponders = @user_ids.length
+
+        set_request_status(r, numOfResponders)
         
-        # puts(r.republished)
-        time_shift_24h = r.created_at < DateTime.now.ago(24*3600)
-        if (r.republished == 0) 
-          if (numOfResponders >= 5)
-            r.republished = 1
-          end
-        end
-  
-        if (r.republished == 2)
-          if (r.updated_at < DateTime.now.ago(60))
-            Request.find(r.id).update(fulfilled: true)
-            r.fulfilled = true
-          end
-        end          
-        
-        r.as_json.merge({
-          fulfilled_at: r.updated_at < DateTime.now.ago(60),
+        r.as_json(except: [:created_at, :updated_at]).merge({
           responders: {
             ids: @user_ids,
             details: @details
@@ -248,16 +206,20 @@ class FullfilmentsController < ApplicationController
       pubSender = User.find(pubRequest["owner_id"])
       pubReceiver = User.find(fullfilment.user_id)
 
-      puts "------------------------------------------------------------------------"
+      # puts "------------------------------------------------------------------------"
       # render json: @fullfilment, status: :ok
       render json: @fullfilment, status: :ok
-      MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
-      MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
+      # MessagingChannel.broadcast_to(pubSender, body: pubRequest, type: "request")
+      # MessagingChannel.broadcast_to(pubReceiver, body: pubRequest, type: "request")
+      
+      # broadcast to all users
+      ActionCable.server.broadcast "platform_status_channel", body: pubRequest, type: "request"
+
       # render json: @fullfilment, status: :ok
       MessagingChannel.broadcast_to(pubSender, body: {fullfilment_id: fullfilment.id}, type: "remove_orphan_messages")
       MessagingChannel.broadcast_to(pubReceiver, body: {fullfilment_id: fullfilment.id}, type: "remove_orphan_messages")
     end
-    puts "< - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - - >"
+    # puts "< - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - -  - - >"
 
   end
 
