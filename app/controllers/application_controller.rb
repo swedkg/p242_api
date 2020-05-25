@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
 
   def set_request_status (request,numOfResponders)
     # TODO: remember to correct
-    responders_limit = 2
+    responders_limit = 3
     ts_24h=DateTime.now.ago(24*3600)
     ts_60s=DateTime.now.ago(60)
     time_shift=request.created_at < ts_60s

@@ -4,7 +4,8 @@ redis: &redis
   # url: redis://127.0.0.1:6379/1
   channel_prefix: p242be_api_production
 
-development: *redis
+development:
+  *redis
   # adapter: redis
   # url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
   # channel_prefix: p242be_api_production
@@ -12,7 +13,11 @@ development: *redis
 test:
 adapter: async
 
-production: *redis
-  # adapter: redis
-  # url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  # channel_prefix: p242be_api_production
+# production: *redis
+# adapter: redis
+# url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+# channel_prefix: p242be_api_production
+
+production:
+  adapter: redis
+  url: redis://redistogo:bf7e9362c1d5c4c7eada933f1e50fbb4@pike.redistogo.com:11129/
