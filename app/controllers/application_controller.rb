@@ -51,9 +51,6 @@ class ApplicationController < ActionController::API
   def app_status
     requests= Request.all
     online_users=User.where(online: true).count
-    # unfulfilled=[]
-    # requestsAll= Request.all.count
-    # unfulfilled= Request.where(:status =>false).count
 
     unfulfilled=requests.select do |elem|
       elem.fulfilled == false

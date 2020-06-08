@@ -69,25 +69,15 @@ class MessagesController < ApplicationController
 
     @message = Message.new(message_params.except(:users, :request_id))
     users = message_params[:users]
-    # puts "---------"
-    # puts users
-    # puts "---------"
     if @message.save
       room = User.find(@message.receiver_id).authentication_token
       receiver = User.find(@message.receiver_id)
-      # puts "--------- create ------------"
-      # puts @message.as_json
-      # puts room
       
       pubMessage = @message.as_json().merge({fullfilment_status: @message.fullfilment.status, users: users, request_id: message_params[:request_id]})
-      
-      # ActionCable.server.broadcast("web_notifications_channel", room: room, message: @message.as_json)
       
       # send message to specific subscriber
       MessagingChannel.broadcast_to(receiver, body: pubMessage, type: "message")
       
-      # puts "---------------------"
-      # ActionCable.server.broadcast "web_notifications_channel:"+room, message: @message.as_json
       render json: pubMessage, status: :created
     else
       render json: @message.errors, status: :unprocessable_entity
