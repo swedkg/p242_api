@@ -33,6 +33,94 @@
       "address": "Avenue de Luxembourg, Bertrange, Luxembourg",
       "fulfilled": 0,
       "republished": false
+    },
+    {
+      "owner_id": "2",
+      "title": "Can you pick me up from the hospital?",
+      "desc": "I'm having an eye surgery next Tuesday. I will not be able to drive. I need some help to get back home",
+      "isOneTime": true,
+      "lat": "49.5018372",
+      "lng": "6.27013394",
+      "address": "3 Rue Emile Moselly, 57570 Mondorff, France",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "1",
+      "title": "Clothing collection for charities",
+      "desc": "We organize a clothing donation this Saturday. Meets us if you have any clothes, paired shoes, bedding or towels that you want to donate.",
+      "isOneTime": false,
+      "lat": "49.8468818",
+      "lng": "6.09907471",
+      "address": "41 Grand-Rue, 9050 Ettelbruck, Luxembourg",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "3",
+      "title": "Do you enjoy assembling IKEA furniture?",
+      "desc": "I got a new wardrobe from IKEA which I'm going to assemble this weekend. Free pizza!",
+      "isOneTime": true,
+      "lat": "49.8634829",
+      "lng": "6.11383759",
+      "address": "2a Rue du Cimetière, 9147 Erpeldange, Luxembourg",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "2",
+      "title": "Collecting sewn face masks",
+      "desc": "We are collecting sewn face masks for individuals experiencing homelessness. They will distributed to shelters and our outreach teams throughout the community",
+      "isOneTime": false,
+      "lat": "49.5268278",
+      "lng": "6.34542519ech",
+      "address": "Rue de Remich Wellenstein Remich",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "3",
+      "title": "I need to tidy up my bookcase",
+      "desc": "Too many books too little time. If you enjoy the smell of old books, you can help me with my bookcase",
+      "isOneTime": false,
+      "lat": "49.5008805",
+      "lng": "5.98609250",
+      "address": "Esch-sur-Alzette Esch-sur-Alzette Luxembourg District",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "1",
+      "title": "Public library needs some fresh first aid kits",
+      "desc": "The first aid kits in our library have expired. We need to replace them unrgently.",
+      "isOneTime": false,
+      "lat": "49.4953060",
+      "lng": "5.97132962",
+      "address": "17 Place de Stalingrad, 4326 Esch-sur-Alzette, Luxembourg",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "2",
+      "title": "Light bulbs for our shelter home",
+      "desc": "If you can spare any light bulbs for our shelter home, it would appreciated. Any type would suit",
+      "isOneTime": false,
+      "lat": "49.5893330",
+      "lng": "6.25330717",
+      "address": "12 Am Seiteschgaard, 5331 Mutfort, Luxembourg",
+      "fulfilled": 0,
+      "republished": false
+    },
+    {
+      "owner_id": "3",
+      "title": "Kindergarten Worksheets",
+      "desc": "Any material that could hepl our little learners. Alphabet, numbers, time, senses, anything that would be useful for our kids",
+      "isOneTime": false,
+      "lat": "49.4692728",
+      "lng": "6.35976741",
+      "address": "93 CR152, 5445 Schengen, Luxembourg",
+      "fulfilled": 0,
+      "republished": false
     }
   ]
 }
